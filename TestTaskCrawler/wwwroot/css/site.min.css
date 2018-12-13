@@ -1,0 +1,38 @@
+body {
+    /*padding-top: 50px;*/
+    padding-bottom: 20px;
+    background-color: #232323;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px
+}
+
+#iconSearch {
+    width: 50%;
+}
+
+#login-wrapper {
+    width: 400px;
+    margin: auto;
+    margin-top: 60px;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+#login-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
+/*for smaller screens */
+@media screen and (max-width: 767px) {
+}
