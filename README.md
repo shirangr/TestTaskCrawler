@@ -1,5 +1,5 @@
 # TestTaskCrawler
 
-![Login](printscreen1.png)
-![Reset Password](https://github.com/shirangr/TestTaskCrawler/master/printscreen2.png)
-![Sign Up](https://github.com/shirangr/TestTaskCrawler/master/printscreen3.png)
+![Login](TestTaskCrawler/printscreen1.PNG)
+![Reset Password](TestTaskCrawler/printscreen2.PNG)
+![Sign Up](TestTaskCrawler/printscreen3.PNG)
