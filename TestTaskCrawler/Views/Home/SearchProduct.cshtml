@@ -10,42 +10,49 @@
         <img src="~/images/searchIcon.PNG" class="center" />
     </div>
 
-    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
-    {
-        <table id="assets-data-table"
-               class="table table-striped table-bordered"
-               style="width:100%">
-            <thead>
+    @*@using (Html.BeginForm("Search", "Home", FormMethod.Get))
+        {*@
+    <nav class="navbar navbar-light bg-light">
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+    <table id="assets-data-table"
+           class="table table-striped table-bordered"
+           style="width:100%">
+        <thead colspan="2" align="center">Person Details</thead>
+        <thead>
+            <tr>
+                <th>Address</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Condition</th>
+                <th>Price</th>
+                <th>ShippingPrice</th>
+                <th>ImagePath</th>
+                <th>LastViewed</th>
+                <th>BackgroundPageColor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prod in Model)
+            {
                 <tr>
-                    <th>Address</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Condition</th>
-                    <th>Price</th>
-                    <th>ShippingPrice</th>
-                    <th>ImagePath</th>
-                    <th>LastViewed</th>
-                    <th>BackgroundPageColor</th>
+                    <td>@prod.Address</td>
+                    <td>@prod.Name</td>
+                    <td>@prod.Description</td>
+                    <td>@prod.Condition</td>
+                    <td>@prod.Price</td>
+                    <td>@prod.ShippingPrice</td>
+                    <td>@prod.ImagePath</td>
+                    <td>@prod.LastViewed</td>
+                    <td>@prod.BackgroundPageColor</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var prod in Model)
-                {
-                    <tr>
-                        <td>@prod.Address</td>
-                        <td>@prod.Name</td>
-                        <td>@prod.Description</td>
-                        <td>@prod.Condition</td>
-                        <td>@prod.Price</td>
-                        <td>@prod.ShippingPrice</td>
-                        <td>@prod.ImagePath</td>
-                        <td>@prod.LastViewed</td>
-                        <td>@prod.BackgroundPageColor</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+            }
+        </tbody>
+    </table>
+    @*  *@}
 </div>
 
 @section Scripts

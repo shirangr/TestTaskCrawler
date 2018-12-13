@@ -4,50 +4,61 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
 using TestTaskCrawler.DAL;
-
+using TestTaskCrawler.LogicLayer;
+using System.Net.Http;
 
 namespace TestTaskCrawler.Controllers
 {
     public class HomeController : Controller
     {
 
-      
 
         public IActionResult Login()
         {
             ViewData["Title"] = "Login";
+            return View();
+        }
 
-            try
+        [HttpPost]
+        public IActionResult Login(string username, string password)
+        {
+            //try
+            //{
+
+            //}
+            //catch (Exception)
+            //{
+
+            //    throw;
+            //}
+
+            ViewData["Title"] = "Login";
+
+            if ((ModelState.IsValid) && (username.Trim().Length > 0 && password.Trim().Length > 0))
             {
-                if (ModelState.IsValid)
-                {
-                    //    if (true) //new user
-                    //    {
-                    //        if (model.FirstTimeLoggedIn == null)
-                    //        {
-                    //            var firsttimeloggedin = DateTime.UtcNow;
-                    //        }
+                //check if user exists
+                //var account = from x in _context.Account
+                //              where x.Username == username
+                //              && x.password == password
+                //              select x;
 
-                    //        var lastloggedin = DateTime.UtcNow;
+                //if (results.count>0) //results.username!=null
+                //{ 
+                //save to db
+                //account.username = username;
 
-                    //        var username = model.Username;
+                //if (account.FirstTimeLoggedIn == null)
+                //{
+                //    var firsttimeloggedin = DateTime.UtcNow;
+                //}
 
-                    //        //save to db
+                //account.lastloggedin = DateTime.UtcNow;
 
-
-                    //        return RedirectToAction("SearchProduct");
-                    //    }
-
-                }
-
-                //return RedirectToAction("Signup");
-                return View();
-            }
-            catch (Exception)
-            {
-                throw;
+                //    return RedirectToAction("SearchProduct", "Home");
+                //}
             }
 
+            return View();
         }
 
         public IActionResult ResetPassword()
@@ -56,10 +67,90 @@ namespace TestTaskCrawler.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult ResetPassword(string UserName)
+        {
+            if (ModelState.IsValid)
+            {
+
+                //if (WebSecurity.UserExists(UserName))
+                //{
+                //    string To = UserName, UserID, Password, SMTPPort, Host;
+                //    string token = WebSecurity.GeneratePasswordResetToken(UserName);
+                //    if (token == null)
+                //    {
+                //        // If user does not exist or is not confirmed.  
+
+                //        return View("Index");
+
+                //    }
+                //    else
+                //    {
+                //        //Create URL with above token  
+
+                //        var lnkHref = "<a href='" + Url.Action("ResetPassword", "Account", new { email = UserName, code = token }, "http") + "'>Reset Password</a>";
+
+
+                //        //HTML Template for Send email  
+
+                //        string subject = "Your changed password";
+
+                //        string body = "<b>Please find the Password Reset Link. </b><br/>" + lnkHref;
+
+
+                //        //Get and set the AppSettings using configuration manager.  
+
+                //        EmailManager.AppSettings(out UserID, out Password, out SMTPPort, out Host);
+
+
+                //        //Call send email methods.  
+
+                //        EmailManager.SendEmail(UserID, subject, body, To, UserID, Password, SMTPPort, Host);
+
+                //    }
+
+                //}
+
+            }
+            return View();
+        }
+
         public IActionResult SearchProduct()
         {
             ViewData["Title"] = "SearchProduct";
             return View();
+        }
+
+
+        //public IActionResult SearchProduct(string emailUser,string productAddress)
+        //public IActionResult SearchProduct(Account user, string productAddress)
+        [HttpGet]
+        public IActionResult SearchProduct(string productAddress)
+        {
+            //check if already exists
+            //var productExistsDetails = from x in _context.Product
+            //                           where x.Username == user.Username
+            //                           && x.password == user.Password
+            //                           select x;
+
+            //if (productExistsDetails.count > 0) //results.username!=null
+            //{
+            //    return View(productExistsDetails.tolist());
+            //}
+
+            //var productSearchedDetails = GetProductDetailsByAddress(productAddress);
+            //if (productSearchedDetails != null)
+            //{
+            //    return View(productSearchedDetails.tolist());
+            //}
+
+            return View();
+        }
+
+        private void GetProductDetailsByAddress(string productAddress)
+        {
+            //var crawler = new WebCrawler(new Downloader(new HttpClient()), new Uri(productAddress));
+            //return crawler.Run(5);
         }
 
         public IActionResult Signup()
@@ -73,105 +164,6 @@ namespace TestTaskCrawler.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        //// POST: /Account/Login
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Login(Account model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //if (_context.Users.Contains(model.UserName))//Errors out here
-        //        //{
-        //        //    var user = new Account { Username = model.Username };
-        //        //    user.Username = model.Username;
-        //        //    var result = await UserManager.CreateAsync(user, model.Password);
-        //        //    if (result.Succeeded)
-        //        //    {
-        //        //        await this.UserManager.AddToRoleAsync(user.Id, model.Name);
-        //        //        return RedirectToAction("Index", "User");
-        //        //    }
-        //        //    AddErrors(result);
-        //        //}
-        //    }
-        //    return View(model);
-        //}
-
-        //// POST: /Account/Register
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Login(Account model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //if (_context.Users.Contains(model.UserName))//Errors out here
-        //        //{
-        //        //    var user = new Account { Username = model.Username };
-        //        //    user.Username = model.Username;
-        //        //    var result = await UserManager.CreateAsync(user, model.Password);
-        //        //    if (result.Succeeded)
-        //        //    {
-        //        //        await this.UserManager.AddToRoleAsync(user.Id, model.Name);
-        //        //        return RedirectToAction("Index", "User");
-        //        //    }
-        //        //    AddErrors(result);
-        //        //}
-        //    }
-        //    return View(model);
-        //}
-
-
-        /// <summary>
-        /// gets account by given email address
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IActionResult> GetUserByEmail(string Address)
-        {
-            //if (Address.Trim().Length > 0 && Address != null)
-            //{
-            //    var users = await _context.Users
-            //    .Include(u => u.Username)
-            //    .ToArrayAsync();
-
-            //    var response = users.Select(u => new
-            //    {
-            //        username = u.Username,
-            //        password = u.Password
-            //    });
-
-            //    return Ok(response);
-            //}
-            //else
-            //{
-            //    return ;
-            //}
-            return Ok();
-        }
-
-        //public async Task<ActionResult> GetProductByAddress(string Address)
-        //{
-        //    if (Address.Trim().Length > 0 && Address != null)
-        //    {
-        //        var users = await _context.Users
-        //        .Include(u => u.Username)
-        //        .ToArrayAsync();
-
-        //        var response = users.Select(u => new
-        //        {
-        //            username = u.Username,
-        //            password = u.Password
-        //        });
-
-        //        return Ok(response);
-        //    }
-        //    else
-        //    {
-        //        return Ok();
-        //    }
-
-        //}
 
     }
 }
