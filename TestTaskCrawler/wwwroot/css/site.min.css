@@ -17,6 +17,8 @@ body {
     width: 400px;
     margin: auto;
     margin-top: 60px;
+    background-color: white;
+    border-radius: 2%;
 }
 
 .center {
@@ -33,6 +35,10 @@ body {
     width: 30%;
 }
 
-/*for smaller screens */
+.forgotPassword {
+    font-size: 10px;
+}
+
+/*mobile - for smaller screens */
 @media screen and (max-width: 767px) {
 }

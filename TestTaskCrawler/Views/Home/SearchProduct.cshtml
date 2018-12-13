@@ -1,9 +1,59 @@
-﻿@model Account
+﻿@page
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv
+@model IEnumerable<TestTaskCrawler.Models.Product>
 
-@{
-    ViewData["Title"] = "SearchProduct";
+
+<div class="container" id="login-wrapper">
+
+    <div class="text-center">
+        <h1 class="display-4">Search Products</h1>
+        <img src="~/images/searchIcon.PNG" class="center" />
+    </div>
+
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        <table id="assets-data-table"
+               class="table table-striped table-bordered"
+               style="width:100%">
+            <thead>
+                <tr>
+                    <th>Address</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Condition</th>
+                    <th>Price</th>
+                    <th>ShippingPrice</th>
+                    <th>ImagePath</th>
+                    <th>LastViewed</th>
+                    <th>BackgroundPageColor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prod in Model)
+                {
+                    <tr>
+                        <td>@prod.Address</td>
+                        <td>@prod.Name</td>
+                        <td>@prod.Description</td>
+                        <td>@prod.Condition</td>
+                        <td>@prod.Price</td>
+                        <td>@prod.ShippingPrice</td>
+                        <td>@prod.ImagePath</td>
+                        <td>@prod.LastViewed</td>
+                        <td>@prod.BackgroundPageColor</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#assets-data-table').DataTable();
+        });
+    </script>
 }
-
-<h2>SearchProduct</h2>
-    @*using (@Html.BeginForm("myMethod", "Home", FormMethod.Post, new { id = @item.JobId })){
-        }*@

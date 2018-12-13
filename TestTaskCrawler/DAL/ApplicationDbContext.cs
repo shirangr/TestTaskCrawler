@@ -1,15 +1,11 @@
 ﻿using System.Data.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TestTaskCrawler.Models;
 
 namespace TestTaskCrawler.DAL
 {
-    public class ApiContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public ApiContext()
+        public ApplicationDbContext()
             : base("CrawlerDB")
         {
             //Database.SetInitializer<ApiContext>(new CreateDatabaseIfNotExists<ApiContext>());

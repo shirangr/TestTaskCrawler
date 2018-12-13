@@ -100,7 +100,7 @@ namespace TestTaskCrawler
         /// adding data to db
         /// </summary>
         /// <param name="context"></param>
-        private static void AddTestData(ApiContext context)
+        private static void AddTestData(ApplicationDbContext context)
         {
             //var testUser1 = new DbModels.User
             //{
