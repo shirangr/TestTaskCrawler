@@ -29,21 +29,20 @@
         <div class="form-group">
             @*@Html.TextBoxFor(m => m.Username)*@
             <input class="form-control center" data-val="true" data-val-required="Password is required." id="Password" name="Password" placeholder="Password" type="password">
+            <a class="forgotPassword center" href="Home/ResetPassword">Forgot Password?</a>
         </div>
         <div class="row button-group">
             <button class="btn btn-primary center" data-style="expand-left" data-spinner-size="25" onclick="myFunction()">LOG IN</button>
         </div>
         <br />
         <div class="form-group center">
-            <a class="forgotPassword" href="Home/ResetPassword">Forgot Password?</a>
-        </div>
-        <div class="form-group center">
-            New to Crawler? <a href="Home/Signup">Create Account</a>
+            @*New to Crawler? <a href="Home/Signup">Create Account</a>*@
+            New to Crawler? <a href="ForgotPassword/ForgotPassword">Create Account</a>
         </div>
 
-        <div class="form-group center">
-            SEARCH PRODUCT <a href="Home/SearchProduct">Search</a>
-        </div>
+        @*<div class="form-group center">
+                SEARCH PRODUCT <a href="Home/SearchProduct">Search</a>
+            </div>*@
     }
 
     @*<div id="login-form">
