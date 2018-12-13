@@ -75,6 +75,10 @@ namespace TestTaskCrawler
                 new { controller = "Home", action = "Login", id = "" }  // Parameter defaults
             );
 
+                //routes.MapRoute(
+                //    name: "ForgotPassword",
+                //    template: "{controller=ForgotPassword}/{action=ResetPassword}/{id?}");
+
                 routes.MapRoute(
                     name: "ResetPassword",
                     template: "{controller=Home}/{action=ResetPassword}/{id?}");
@@ -96,31 +100,6 @@ namespace TestTaskCrawler
             ///************************///
         }
 
-        /// <summary>
-        /// adding data to db
-        /// </summary>
-        /// <param name="context"></param>
-        private static void AddTestData(ApplicationDbContext context)
-        {
-            //var testUser1 = new DbModels.User
-            //{
-            //    Id = "abc123",
-            //    FirstName = "Luke",
-            //    LastName = "Skywalker"
-            //};
-
-            //context.Users.Add(testUser1);
-
-            //var testPost1 = new DbModels.Post
-            //{
-            //    Id = "def234",
-            //    UserId = testUser1.Id,
-            //    Content = "What a piece of junk!"
-            //};
-
-            //context.Posts.Add(testPost1);
-
-            //context.SaveChanges();
-        }
+        
     }
 }

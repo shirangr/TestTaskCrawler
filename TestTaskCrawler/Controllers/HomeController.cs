@@ -1,11 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
-using TestTaskCrawler.DAL;
-using TestTaskCrawler.LogicLayer;
-using System.Net.Http;
 
 namespace TestTaskCrawler.Controllers
 {
@@ -147,11 +142,6 @@ namespace TestTaskCrawler.Controllers
             return View();
         }
 
-        private void GetProductDetailsByAddress(string productAddress)
-        {
-            //var crawler = new WebCrawler(new Downloader(new HttpClient()), new Uri(productAddress));
-            //return crawler.Run(5);
-        }
 
         public IActionResult Signup()
         {

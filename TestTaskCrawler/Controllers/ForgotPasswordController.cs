@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace TestTaskCrawler.Controllers
 {
     public class ForgotPasswordController : Controller
     {
-        public ActionResult ForgotPassword()
+        public ActionResult ResetPassword()
         {
+            ViewData["Title"] = "Reset Password";
             return View();
         }
 
         [HttpPost]
-        public ActionResult ForgotPassword(string UserName)
+        public ActionResult ResetPassword(string UserName)
         {
+            ViewData["Title"] = "Reset Password";
+
             if (ModelState.IsValid)
             {
 

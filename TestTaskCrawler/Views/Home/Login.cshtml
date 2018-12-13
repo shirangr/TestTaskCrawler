@@ -1,7 +1,6 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv
 @model TestTaskCrawler.Models.Account
-
 @* FOR TESTING - find which is current environment *@
 @*<p> ASPNETCORE_ENVIRONMENT = @hostingEnv.EnvironmentName</p>*@
 
@@ -11,8 +10,11 @@
         <img src="~/images/searchIcon.PNG" class="center" />
     </div>
 
-    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = ("login-form") }))
     {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
         <input name="__RequestVerificationToken" type="hidden" value="kmtx57HZPfVpYL2WO2G4qNZKDkJ_WxchdSt26Il4JsAfkjG6RjOUOK65fe7YGS3HlklbY15kBIHXgECfxkwBgYGZogThMfkIjsuwdvZa56R4vu3uiKgarjSVzW_1dAfGM2QkcmujSwfU4v_O7b7zTlQyOCpbARLCBTbKBUdZBok1">
 
         <div class="row center">
@@ -30,14 +32,15 @@
             @*@Html.TextBoxFor(m => m.Username)*@
             <input class="form-control center" data-val="true" data-val-required="Password is required." id="Password" name="Password" placeholder="Password" type="password">
             <a class="forgotPassword center" href="Home/ResetPassword">Forgot Password?</a>
+            @*<a class="forgotPassword center" href="ForgotPassword/ResetPassword">Forgot Password?</a>*@
+            
         </div>
         <div class="row button-group">
             <button class="btn btn-primary center" data-style="expand-left" data-spinner-size="25" onclick="myFunction()">LOG IN</button>
         </div>
         <br />
         <div class="form-group center">
-            @*New to Crawler? <a href="Home/Signup">Create Account</a>*@
-            New to Crawler? <a href="ForgotPassword/ForgotPassword">Create Account</a>
+            New to Crawler? <a href="Home/Signup">Create Account</a>
         </div>
 
         @*<div class="form-group center">
