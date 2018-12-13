@@ -1,6 +1,6 @@
-﻿@page
-@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv
-@model IEnumerable<TestTaskCrawler.Models.Product>
+﻿@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv
+@using TestTaskCrawler.Models;
+@model TestTaskCrawler.Models.Account
 
 
 <div class="container" id="login-wrapper">
@@ -36,23 +36,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var prod in Model)
+            @if (this.Model.Products.Count > 0)
             {
-                <tr>
-                    <td>@prod.Address</td>
-                    <td>@prod.Name</td>
-                    <td>@prod.Description</td>
-                    <td>@prod.Condition</td>
-                    <td>@prod.Price</td>
-                    <td>@prod.ShippingPrice</td>
-                    <td>@prod.ImagePath</td>
-                    <td>@prod.LastViewed</td>
-                    <td>@prod.BackgroundPageColor</td>
-                </tr>
+                foreach (Product item in this.Model.Products)
+                {
+                    <tr>
+                        <td>@item.Address</td>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.Condition</td>
+                        <td>@item.Price</td>
+                        <td>@item.ShippingPrice</td>
+                        <td>@item.ImagePath</td>
+                        <td>@item.LastViewed</td>
+                        <td>@item.BackgroundPageColor</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
-    @*  *@}
+    }
 </div>
 
 @section Scripts

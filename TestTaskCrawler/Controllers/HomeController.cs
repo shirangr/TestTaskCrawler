@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
+using TestTaskCrawler.DAL;
 
 namespace TestTaskCrawler.Controllers
 {
@@ -29,7 +30,8 @@ namespace TestTaskCrawler.Controllers
 
             ViewData["Title"] = "Login";
 
-            if ((ModelState.IsValid) && (username.Trim().Length > 0 && password.Trim().Length > 0))
+            if ((ModelState.IsValid)
+                && (username != null && username.Trim().Length > 0 && password != null && password.Trim().Length > 0))
             {
                 //check if user exists
                 //var account = from x in _context.Account
@@ -146,6 +148,20 @@ namespace TestTaskCrawler.Controllers
         public IActionResult Signup()
         {
             ViewData["Title"] = "Signup";
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Signup(string username, string password)
+        {
+            ViewData["Title"] = "Signup";
+
+            if (username != null && username.Trim().Length > 0 && password != null && password.Trim().Length > 0)
+            {
+                EFContext.addUser(username, password);
+                return RedirectToAction("Login", "Home");
+            }
+
             return View();
         }
 

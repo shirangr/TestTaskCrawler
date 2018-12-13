@@ -70,10 +70,8 @@ namespace TestTaskCrawler
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                "Default",                                              // Route name
-                "{controller}/{action}/{id}",                           // URL with parameters
-                new { controller = "Home", action = "Login", id = "" }  // Parameter defaults
-            );
+                    name: "Default",
+                    template: "{controller=Home}/{action=Login}/{id?}");
 
                 //routes.MapRoute(
                 //    name: "ForgotPassword",
@@ -100,6 +98,6 @@ namespace TestTaskCrawler
             ///************************///
         }
 
-        
+
     }
 }

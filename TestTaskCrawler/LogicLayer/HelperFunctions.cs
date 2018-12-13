@@ -18,7 +18,7 @@ namespace TestTaskCrawler.LogicLayer
         /// adding data to db
         /// </summary>
         /// <param name="context"></param>
-        private static void AddTestData(ApplicationDbContext context)
+        public static void AddTestData(ApplicationDbContext context)
         {
             //var testUser1 = new DbModels.User
             //{
@@ -39,6 +39,22 @@ namespace TestTaskCrawler.LogicLayer
             //context.Posts.Add(testPost1);
 
             //context.SaveChanges();
+        }
+
+        public void GetHtmlFromURL(string url)
+        {
+            //full page
+            //HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("http://www.domain.com/");
+            //HttpWebResponse WebResp = (HttpWebResponse)WebReq.GetResponse();
+            //Stream response = WebResp.GetResponseStream();
+            //StreamReader data = new StreamReader(response);
+            //string result = data.ReadToEnd();
+
+            //specific div from page
+            //HtmlWeb web = new HtmlWeb();
+            //HtmlDocument doc = web.Load("http://jsbin.com/owobe3");
+            //HtmlNode rateNode = doc.DocumentNode.SelectSingleNode("//div[@id='rate']");
+            //string rate = rateNode.InnerText;
         }
     }
 }

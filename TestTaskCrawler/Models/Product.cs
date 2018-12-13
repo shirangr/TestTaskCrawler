@@ -7,6 +7,11 @@ namespace TestTaskCrawler.Models
 {
     public class Product
     {
+        public Product()
+        {
+            this.Accounts = new List<Account>();
+        }
+
         public string EmailAccount { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
