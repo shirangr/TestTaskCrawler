@@ -1,47 +1,53 @@
 ﻿using TestTaskCrawler.DAL;
+using TestTaskCrawler.Models;
+using TestTaskCrawler.LogicLayer;
+using System;
 
 namespace TestTaskCrawler.LogicLayer
 {
     public class HelperFunctions
     {
         /// <summary>
+        /// Adds New user to db after signing up
+        /// </summary>
+        /// <param name="usrname"></param>
+        /// <param name="pass"></param>
+        public static int AddUser(Account user)
+        {
+            Account usr = new Account() { Username = user.Username, Password = user.Password };
+            int result = 0;
+
+            try
+            {
+                using (EFContext ctx = new EFContext())
+                {
+                    ctx.Accounts.Add(usr);
+                    result = ctx.SaveChanges();
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return result;
+            }
+        }
+
+        /// <summary>
         /// returns product details from db/from web
         /// </summary>
-        /// <param name="productAddress"></param>
-        public void GetProductDetailsByAddress(string productAddress)
+        /// <param name="productUrl"></param>
+        public static void GetProductDetailsByUrl(string productUrl)
         {
-            //var crawler = new WebCrawler(new Downloader(new HttpClient()), new Uri(productAddress));
+            //var crawler = new WebCrawler(new Downloader(new HttpClient()), new Uri(productUrl));
             //return crawler.Run(5);
         }
 
         /// <summary>
-        /// adding data to db
+        /// 
         /// </summary>
-        /// <param name="context"></param>
-        public static void AddTestData(ApplicationDbContext context)
-        {
-            //var testUser1 = new DbModels.User
-            //{
-            //    Id = "abc123",
-            //    FirstName = "Luke",
-            //    LastName = "Skywalker"
-            //};
-
-            //context.Users.Add(testUser1);
-
-            //var testPost1 = new DbModels.Post
-            //{
-            //    Id = "def234",
-            //    UserId = testUser1.Id,
-            //    Content = "What a piece of junk!"
-            //};
-
-            //context.Posts.Add(testPost1);
-
-            //context.SaveChanges();
-        }
-
-        public void GetHtmlFromURL(string url)
+        /// <param name="url"></param>
+        public static void GetHtmlFromURL(string productUrl)
         {
             //full page
             //HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("http://www.domain.com/");
@@ -55,6 +61,12 @@ namespace TestTaskCrawler.LogicLayer
             //HtmlDocument doc = web.Load("http://jsbin.com/owobe3");
             //HtmlNode rateNode = doc.DocumentNode.SelectSingleNode("//div[@id='rate']");
             //string rate = rateNode.InnerText;
+        }
+
+        public static bool IsUserAuthorized(Account user)
+        {
+            return true;
+
         }
     }
 }

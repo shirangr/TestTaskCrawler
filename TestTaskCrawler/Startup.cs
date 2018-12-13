@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using TestTaskCrawler.DAL;
-using Microsoft.Extensions.Logging;
 
 namespace TestTaskCrawler
 {
@@ -35,11 +26,8 @@ namespace TestTaskCrawler
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            //services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase());
-
+            //EFContext db = EFContext.Create();
+            
             services.AddMvc();
         }
 
@@ -60,7 +48,7 @@ namespace TestTaskCrawler
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

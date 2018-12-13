@@ -15,7 +15,7 @@ namespace TestTaskCrawler.Models
         public string EmailAccount { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Address { get; set; } //PK- **comment: I decided to choose as pk because url is unique for each product
+        public string ProductURL { get; set; } //PK- **comment: I decided to choose as pk because url is unique for each product
         public string Name { get; set; }
         public string Description { get; set; }
         public string Condition { get; set; }

@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
 using TestTaskCrawler.DAL;
+using TestTaskCrawler.LogicLayer;
 
 namespace TestTaskCrawler.Controllers
 {
     public class HomeController : Controller
     {
 
-
+        [HttpGet]
         public IActionResult Login()
         {
             ViewData["Title"] = "Login";
@@ -16,48 +17,45 @@ namespace TestTaskCrawler.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public IActionResult Login(Account user)
         {
-            //try
-            //{
-
-            //}
-            //catch (Exception)
-            //{
-
-            //    throw;
-            //}
-
             ViewData["Title"] = "Login";
 
-            if ((ModelState.IsValid)
-                && (username != null && username.Trim().Length > 0 && password != null && password.Trim().Length > 0))
+            if (ModelState.IsValid && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
             {
-                //check if user exists
-                //var account = from x in _context.Account
-                //              where x.Username == username
-                //              && x.password == password
-                //              select x;
+                using (var ctx = new EFContext())
+                {
+                    //DbCollectionEntry results = from x in dbo.Accounts
+                    //                              where x.Username == user.Username
+                    //                              && x.password == user.Password
+                    //                              select x;
 
-                //if (results.count>0) //results.username!=null
-                //{ 
-                //save to db
-                //account.username = username;
+                    //ctx.Users.SqlQuery("SELECT * FROM dbo.Account WHERE username=@p0 and password=@p1", new params object user.Username);
 
-                //if (account.FirstTimeLoggedIn == null)
-                //{
-                //    var firsttimeloggedin = DateTime.UtcNow;
-                //}
 
-                //account.lastloggedin = DateTime.UtcNow;
+                    //if (results.count>0) //results.username!=null
+                    //{ 
+                    //save to db
+                    //account.username = username;
 
-                //    return RedirectToAction("SearchProduct", "Home");
-                //}
+                    //if (account.FirstTimeLoggedIn == null)
+                    //{
+                    //    var firsttimeloggedin = DateTime.UtcNow;
+                    //}
+
+                    //account.lastloggedin = DateTime.UtcNow;
+
+                    //ctx.SaveChanges();
+
+                    //    return RedirectToAction("SearchProduct", "Home");
+                    //}
+                }
             }
 
             return View();
         }
 
+        [HttpGet]
         public IActionResult ResetPassword()
         {
             ViewData["Title"] = "ResetPassword";
@@ -109,58 +107,65 @@ namespace TestTaskCrawler.Controllers
                 //}
 
             }
-            return View();
-        }
 
-        public IActionResult SearchProduct()
-        {
-            ViewData["Title"] = "SearchProduct";
-            return View();
-        }
-
-
-        //public IActionResult SearchProduct(string emailUser,string productAddress)
-        //public IActionResult SearchProduct(Account user, string productAddress)
-        [HttpGet]
-        public IActionResult SearchProduct(string productAddress)
-        {
-            //check if already exists
-            //var productExistsDetails = from x in _context.Product
-            //                           where x.Username == user.Username
-            //                           && x.password == user.Password
-            //                           select x;
-
-            //if (productExistsDetails.count > 0) //results.username!=null
-            //{
-            //    return View(productExistsDetails.tolist());
-            //}
-
-            //var productSearchedDetails = GetProductDetailsByAddress(productAddress);
-            //if (productSearchedDetails != null)
-            //{
-            //    return View(productSearchedDetails.tolist());
-            //}
 
             return View();
         }
 
 
-        public IActionResult Signup()
+        //public IActionResult SearchProduct(string emailUser,string productUrl)
+        //public IActionResult SearchProduct(Account user, string productUrl)
+        [HttpPost]
+        public IActionResult SearchProduct(string productUrl)
         {
-            ViewData["Title"] = "Signup";
+            if (ModelState.IsValid)
+            {
+                //using (var ctx = new EFContext())
+                //{
+                //    //check if already exists
+                //    var productExistsDetails = (from x in ctx.Products
+                //                                where x.productUrl == productUrl
+                //                                orderby x.date
+                //                                select x).ToList(); 
+
+                //}
+                //if (productExistsDetails.count > 0) //results.username!=null
+                //{
+                //    return View(productExistsDetails.tolist());
+                //}
+
+                //var productSearchedDetails = GetProductDetailsByAddress(productUrl);
+                //if (productSearchedDetails != null)
+                //{
+                //    return View(productSearchedDetails.tolist());
+                //}
+
+            }
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult Signup(string username, string password)
+        public IActionResult Signup(Account user)
         {
             ViewData["Title"] = "Signup";
+            int AddedUser = 0;
 
-            if (username != null && username.Trim().Length > 0 && password != null && password.Trim().Length > 0)
+            if (ModelState.IsValid)
             {
-                EFContext.addUser(username, password);
-                return RedirectToAction("Login", "Home");
+                if (user != null && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
+                {
+                    AddedUser = HelperFunctions.AddUser(user);
+                }
+
+                if (AddedUser != 0)
+                {
+                    //ViewBag.Username = Request["username"].ToString();
+                    //ViewBag.Password = Request["password"].ToString();
+                    return RedirectToAction("Login", "Home");
+                }
             }
+
 
             return View();
         }

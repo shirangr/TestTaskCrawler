@@ -1,6 +1,6 @@
 ﻿@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv
 @using TestTaskCrawler.Models;
-@model TestTaskCrawler.Models.Account
+@model TestTaskCrawler.Models.Product
 
 
 <div class="container" id="login-wrapper">
@@ -10,21 +10,19 @@
         <img src="~/images/searchIcon.PNG" class="center" />
     </div>
 
-    @*@using (Html.BeginForm("Search", "Home", FormMethod.Get))
-        {*@
     <nav class="navbar navbar-light bg-light">
-        <form class="form-inline">
+        <form class="form-inline" action="/home/Search" method="post">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Product</button>
         </form>
     </nav>
     <table id="assets-data-table"
            class="table table-striped table-bordered"
            style="width:100%">
-        <thead colspan="2" align="center">Person Details</thead>
+        <thead colspan="2" align="center">Product Details</thead>
         <thead>
             <tr>
-                <th>Address</th>
+                <th>Product URL</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Condition</th>
@@ -36,23 +34,39 @@
             </tr>
         </thead>
         <tbody>
-            @if (this.Model.Products.Count > 0)
-            {
-                foreach (Product item in this.Model.Products)
+            @*@if (this.Model.Products != null)
                 {
-                    <tr>
-                        <td>@item.Address</td>
-                        <td>@item.Name</td>
-                        <td>@item.Description</td>
-                        <td>@item.Condition</td>
-                        <td>@item.Price</td>
-                        <td>@item.ShippingPrice</td>
-                        <td>@item.ImagePath</td>
-                        <td>@item.LastViewed</td>
-                        <td>@item.BackgroundPageColor</td>
-                    </tr>
+
                 }
-            }
+                @if (this.Model.Products.Count > 0)
+                {
+                    foreach (Product item in this.Model)
+                    {
+                        <tr>
+                            <td>@item.ProductURL</td>
+                            <td>@item.Name</td>
+                            <td>@item.Description</td>
+                            <td>@item.Condition</td>
+                            <td>@item.Price</td>
+                            <td>@item.ShippingPrice</td>
+                            <td>@item.ImagePath</td>
+                            <td>@item.LastViewed</td>
+                            <td>@item.BackgroundPageColor</td>
+                        </tr>
+                    }
+                }*@
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
         </tbody>
     </table>
     }
