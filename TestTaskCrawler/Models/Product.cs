@@ -12,7 +12,7 @@ namespace TestTaskCrawler.Models
             this.Accounts = new List<Account>(); //many to many realtionship
         }
 
-        [ForeignKey("Username")]
+        [ForeignKey("Email")]
         public string EmailAccount { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

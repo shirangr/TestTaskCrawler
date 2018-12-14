@@ -18,8 +18,12 @@
 </head>
 <body>
 
+    @* for cookies *@
     <partial name="_CookieConsentPartial" />
-
+    
+    @* for identity *@
+    <partial name="_LoginPartial" />
+    
     <div class="container body-content">
         @RenderBody()
         <hr />

@@ -2,8 +2,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TestTaskCrawler.DAL;
+using TestTaskCrawler.LogicLayer;
 
 namespace TestTaskCrawler
 {
@@ -19,6 +25,9 @@ namespace TestTaskCrawler
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
+            //cookies
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -26,9 +35,35 @@ namespace TestTaskCrawler
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //EFContext db = EFContext.Create();
-            
-            services.AddMvc();
+            //db
+            services.AddDbContext<EFContextDB>(options =>
+            options.UseSqlServer(
+                Configuration.GetConnectionString("EFContextDBConnectionString")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                // services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<EFContextDB>()
+                .AddDefaultTokenProviders();
+
+            //identity
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddRazorPagesOptions(options =>
+                {
+                    options.AllowAreas = true;
+                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+
+            // using Microsoft.AspNetCore.Identity.UI.Services;
+            services.AddSingleton<IEmailSender, EmailSender>();  //design patterns**
+            //services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,10 +83,11 @@ namespace TestTaskCrawler
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseCookiePolicy(); //for cookies
+            app.UseAuthentication(); //for identity
             app.UseMvc();
 
 
@@ -61,13 +97,13 @@ namespace TestTaskCrawler
                     name: "Default",
                     template: "{controller=Home}/{action=Login}/{id?}");
 
-                //routes.MapRoute(
-                //    name: "ForgotPassword",
-                //    template: "{controller=ForgotPassword}/{action=ResetPassword}/{id?}");
-
                 routes.MapRoute(
                     name: "ResetPassword",
                     template: "{controller=Home}/{action=ResetPassword}/{id?}");
+
+                routes.MapRoute(
+                    name: "ForgotPassword",
+                    template: "{controller=Home}/{action=ForgotPassword}/{id?}");
 
                 routes.MapRoute(
                     name: "SearchProduct",
@@ -79,12 +115,8 @@ namespace TestTaskCrawler
 
             });
 
-            ///**********for entity framework**************///
-            //var context = serviceProvider.GetService<ApiContext>();
-            //AddTestData(context);
-
-            ///************************///
         }
+
 
 
     }

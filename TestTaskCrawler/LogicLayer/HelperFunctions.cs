@@ -19,25 +19,25 @@ namespace TestTaskCrawler.LogicLayer
             {
                 Account NewUser = null;
 
-                if ((user == null) || (user.Username == null))
+                if ((user == null) || (user.Email == null))
                 {
                     return null;
                 }
 
-                using (EFContextDB db = new EFContextDB())
-                {
-                    Account User = db.Accounts.Find(user.Username);
+                //using (EFContextDB db = new EFContextDB())
+                //{
+                //    Account User = db.Accounts.Find(user.Email);
 
-                    if (User == null)
-                    {
-                        NewUser = new Account() { Username = user.Username, Password = user.Password };
-                        db.Accounts.Add(NewUser);
-                        db.SaveChanges();
-                    }
+                //    if (User == null)
+                //    {
+                //        NewUser = new Account() { Email = user.Email, Password = user.Password };
+                //        db.Accounts.Add(NewUser);
+                //        db.SaveChanges();
+                //    }
 
-                    return NewUser;
-                    
-                }
+                //    return NewUser;
+
+                //}
 
                 return null;
             }
@@ -77,10 +77,10 @@ namespace TestTaskCrawler.LogicLayer
             //string rate = rateNode.InnerText;
         }
 
-        public static bool IsUserAuthorized(Account user)
+        public static bool IsUserAuthorized(string user)
         {
             return true;
-
         }
     }
+
 }

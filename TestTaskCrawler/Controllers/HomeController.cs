@@ -4,19 +4,21 @@ using TestTaskCrawler.Models;
 using TestTaskCrawler.DAL;
 using TestTaskCrawler.LogicLayer;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace TestTaskCrawler.Controllers
 {
     public class HomeController : Controller
     {
-        EFContextDB db = new EFContextDB();
+        //EFContextDB db = new EFContextDB();
 
         [HttpGet]
         public IActionResult Login()
         {
             ViewData["Title"] = "Login";
-            //return View();
-            return View(db.Accounts.ToList());
+            return View();
+            //return View(db.Accounts.ToList());
         }
 
         [HttpPost]
@@ -24,22 +26,22 @@ namespace TestTaskCrawler.Controllers
         {
             ViewData["Title"] = "Login";
 
-            if (ModelState.IsValid && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
+            if (ModelState.IsValid && !string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
             {
-                using (var ctx = new EFContextDB())
-                {
+                //using (var ctx = new EFContextDB())
+                //{
                     //var results = from x in db.Accounts
-                    //              where x.Username == user.Username
+                    //              where x.Email == user.Email
                     //              && x.password == user.Password
                     //              select x;
 
-                    //ctx.Users.SqlQuery("SELECT * FROM db.Accounts WHERE username=@p0 and password=@p1", new params object user.Username);
+                    //ctx.Users.SqlQuery("SELECT * FROM db.Accounts WHERE Email=@p0 and password=@p1", new params object user.Email);
 
 
-                    //if (results.count>0) //results.username!=null
+                    //if (results.count>0) //results.Email!=null
                     //{ 
                     //save to db
-                    //account.username = username;
+                    //account.Email = Email;
 
                     //if (account.FirstTimeLoggedIn == null)
                     //{
@@ -52,25 +54,43 @@ namespace TestTaskCrawler.Controllers
 
                     //    return RedirectToAction("SearchProduct", "Home");
                     //}
-                }
+                //}
             }
 
             return View();
         }
 
-        [HttpGet]
-        public IActionResult ResetPassword()
+        public ActionResult ResetPassword(string code, string email)
         {
-            ViewData["Title"] = "ResetPassword";
+            //ResetPasswordModel model = new ResetPasswordModel();
+            //model.ReturnToken = code;
+            //return View(model);
+
             return View();
         }
 
-        [HttpPost]
-        public ActionResult ResetPassword(string UserName)
+        //[HttpPost]
+        //public ActionResult ResetPassword(ResetPasswordModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //bool resetResponse = WebSecurity.ResetPassword(model.ReturnToken, model.Password);
+        //        //if (resetResponse)
+        //        //{
+        //        //    ViewBag.Message = "Successfully Changed";
+        //        //}
+        //        //else
+        //        //{
+        //        //    ViewBag.Message = "Something went horribly wrong!";
+        //        //}
+        //    }
+        //    return View(model);
+        //}
+
+        public ActionResult ForgotPassword(string UserName)
         {
             if (ModelState.IsValid)
             {
-
                 //if (WebSecurity.UserExists(UserName))
                 //{
                 //    string To = UserName, UserID, Password, SMTPPort, Host;
@@ -110,11 +130,9 @@ namespace TestTaskCrawler.Controllers
                 //}
 
             }
-
-
             return View();
         }
-
+        
 
         //public IActionResult SearchProduct(string emailUser,string productUrl)
         //public IActionResult SearchProduct(Account user, string productUrl)
@@ -132,7 +150,7 @@ namespace TestTaskCrawler.Controllers
                 //                                select x).ToList(); 
 
                 //}
-                //if (productExistsDetails.count > 0) //results.username!=null
+                //if (productExistsDetails.count > 0) //results.Email!=null
                 //{
                 //    return View(productExistsDetails.tolist());
                 //}
@@ -156,14 +174,14 @@ namespace TestTaskCrawler.Controllers
 
             if (ModelState.IsValid)
             {
-                if (user != null && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
+                if (user != null && !string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
                 {
                     NewUser = HelperFunctions.AddUser(user);
                 }
 
                 if (NewUser != null)
                 {
-                    //ViewBag.Username = Request["username"].ToString();
+                    //ViewBag.Email = Request["Email"].ToString();
                     //ViewBag.Password = Request["password"].ToString();
                     return RedirectToAction("Login", "Home");
                 }
@@ -177,79 +195,6 @@ namespace TestTaskCrawler.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        //     /// <summary>
-        //     /// 
-        //     /// </summary>
-        //     /// <returns></returns>
-        //     public ActionResult Create()
-        //     {
-        //         PopulateDepartmentsDropDownList();
-        //         return View();
-        //     }
-
-        //     [HttpPost]
-        //     [ValidateAntiForgeryToken]
-        //     public ActionResult Create(
-        //        [Bind(Include = "CourseID,Title,Credits,DepartmentID")]
-        //Course course)
-        //     {
-        //         try
-        //         {
-        //             if (ModelState.IsValid)
-        //             {
-        //                 db.Courses.Add(course);
-        //                 db.SaveChanges();
-        //                 return RedirectToAction("Index");
-        //             }
-        //         }
-        //         catch (DataException /* dex */)
-        //         {
-        //             //Log the error (uncomment dex variable name after DataException and add a line here to write a log.)
-        //             ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
-        //         }
-        //         PopulateDepartmentsDropDownList(course.DepartmentID);
-        //         return View(course);
-        //     }
-
-        //     public ActionResult Edit(int id)
-        //     {
-        //         Course course = db.Courses.Find(id);
-        //         PopulateDepartmentsDropDownList(course.DepartmentID);
-        //         return View(course);
-        //     }
-
-        //     [HttpPost]
-        //     [ValidateAntiForgeryToken]
-        //     public ActionResult Edit(
-        //         [Bind(Include = "CourseID,Title,Credits,DepartmentID")]
-        // Course course)
-        //     {
-        //         try
-        //         {
-        //             if (ModelState.IsValid)
-        //             {
-        //                 db.Entry(course).State = EntityState.Modified;
-        //                 db.SaveChanges();
-        //                 return RedirectToAction("Index");
-        //             }
-        //         }
-        //         catch (DataException /* dex */)
-        //         {
-        //             //Log the error (uncomment dex variable name after DataException and add a line here to write a log.)
-        //             ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
-        //         }
-        //         PopulateDepartmentsDropDownList(course.DepartmentID);
-        //         return View(course);
-        //     }
-
-        //     private void PopulateDepartmentsDropDownList(object selectedDepartment = null)
-        //     {
-        //         var departmentsQuery = from d in db.Departments
-        //                                orderby d.Name
-        //                                select d;
-        //         ViewBag.DepartmentID = new SelectList(departmentsQuery, "DepartmentID", "Name", selectedDepartment);
-        //     }
 
     }
 }
