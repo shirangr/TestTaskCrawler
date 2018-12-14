@@ -11,7 +11,6 @@ namespace TestTaskCrawler.Controllers
 {
     public class HomeController : Controller
     {
-        //EFContextDB db = new EFContextDB();
 
         [HttpGet]
         public IActionResult Login()
@@ -22,41 +21,52 @@ namespace TestTaskCrawler.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(Account user)
+        public IActionResult Login(string email, string password)
         {
             ViewData["Title"] = "Login";
 
-            if (ModelState.IsValid && !string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
+            if (ModelState.IsValid && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
             {
+                //var query = from b in db.Accounts
+                //            orderby b.Email
+                //            select b;
+
+                //if (query!=null) //not exists
+                //{
+
+                //}
+
+
                 //using (var ctx = new EFContextDB())
                 //{
-                    //var results = from x in db.Accounts
-                    //              where x.Email == user.Email
-                    //              && x.password == user.Password
-                    //              select x;
+                //var results = from x in db.Accounts
+                //              where x.Email == user.Email
+                //              && x.password == user.Password
+                //              select x;
 
-                    //ctx.Users.SqlQuery("SELECT * FROM db.Accounts WHERE Email=@p0 and password=@p1", new params object user.Email);
+                //ctx.Users.SqlQuery("SELECT * FROM db.Accounts WHERE Email=@p0 and password=@p1", new params object user.Email);
 
 
-                    //if (results.count>0) //results.Email!=null
-                    //{ 
-                    //save to db
-                    //account.Email = Email;
+                //if (results.count>0) //results.Email!=null
+                //{ 
+                //save to db
+                //account.Email = Email;
 
-                    //if (account.FirstTimeLoggedIn == null)
-                    //{
-                    //    var firsttimeloggedin = DateTime.UtcNow;
-                    //}
+                //if (account.FirstTimeLoggedIn == null)
+                //{
+                //    var firsttimeloggedin = DateTime.UtcNow;
+                //}
 
-                    //account.lastloggedin = DateTime.UtcNow;
+                //account.lastloggedin = DateTime.UtcNow;
 
-                    //ctx.SaveChanges();
+                //ctx.SaveChanges();
 
-                    //    return RedirectToAction("SearchProduct", "Home");
-                    //}
+                //    return RedirectToAction("SearchProduct", "Home");
+                //}
                 //}
             }
 
+            //ViewBag.Account = NewUser;
             return View();
         }
 
@@ -132,8 +142,8 @@ namespace TestTaskCrawler.Controllers
             }
             return View();
         }
-        
 
+        
         //public IActionResult SearchProduct(string emailUser,string productUrl)
         //public IActionResult SearchProduct(Account user, string productUrl)
         [HttpPost]
@@ -166,23 +176,23 @@ namespace TestTaskCrawler.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Signup(string productUrl)
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Signup(Account user)
         {
             ViewData["Title"] = "Signup";
-            Account NewUser = null;
 
             if (ModelState.IsValid)
             {
-                if (user != null && !string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
-                {
-                    NewUser = HelperFunctions.AddUser(user);
-                }
+                var NewUser = HelperFunctions.AddUser(user);
 
                 if (NewUser != null)
                 {
-                    //ViewBag.Email = Request["Email"].ToString();
-                    //ViewBag.Password = Request["password"].ToString();
                     return RedirectToAction("Login", "Home");
                 }
             }

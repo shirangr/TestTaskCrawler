@@ -1,21 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System.Data.Common;
+using System.Data.Entity;
 using TestTaskCrawler.Models;
 
 namespace TestTaskCrawler.DAL
 {
+
     public class EFContextDB : DbContext
     {
-        public DbSet<Account> Accounts { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
-        public EFContextDB(DbContextOptions<EFContextDB> options) : base(options)
+        public EFContextDB() : base("Server=(localdb)\\MSSQLLocalDB;Database=EFContextDB;Trusted_Connection=True;MultipleActiveResultSets=true")
         {
-            //Database.SetInitializer<EFContextDB>(new CreateDatabaseIfNotExists<EFContextDB>());
-            //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseIfModelChanges<SchoolDBContext>());
-            //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseAlways<SchoolDBContext>());
-            //Database.SetInitializer<SchoolDBContext>(new SchoolDBInitializer());
-        }
 
+        }
     }
 }

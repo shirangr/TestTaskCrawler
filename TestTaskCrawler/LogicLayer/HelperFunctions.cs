@@ -1,8 +1,6 @@
 ﻿using TestTaskCrawler.DAL;
 using TestTaskCrawler.Models;
-using TestTaskCrawler.LogicLayer;
 using System;
-using Microsoft.AspNetCore.Mvc;
 
 namespace TestTaskCrawler.LogicLayer
 {
@@ -17,29 +15,23 @@ namespace TestTaskCrawler.LogicLayer
         {
             try
             {
-                Account NewUser = null;
-
                 if ((user == null) || (user.Email == null))
                 {
                     return null;
                 }
 
-                //using (EFContextDB db = new EFContextDB())
-                //{
-                //    Account User = db.Accounts.Find(user.Email);
+                using (var db = new EFContextDB())
+                {
+                    // Create and save a new user
+                    var firsttimeloggedin = DateTime.Now;
+                    var NewUser = new Account { Email = user.Email, Password = user.Password, FirstTimeLoggedIn = firsttimeloggedin };
+                    db.Accounts.Add(NewUser);
+                    db.SaveChanges();
 
-                //    if (User == null)
-                //    {
-                //        NewUser = new Account() { Email = user.Email, Password = user.Password };
-                //        db.Accounts.Add(NewUser);
-                //        db.SaveChanges();
-                //    }
+                    return NewUser;
+                }
 
-                //    return NewUser;
 
-                //}
-
-                return null;
             }
             catch (Exception ex)
             {

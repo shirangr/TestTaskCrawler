@@ -7,15 +7,9 @@ namespace TestTaskCrawler.Models
 {
     public class Product
     {
-        public Product()
-        {
-            this.Accounts = new List<Account>(); //many to many realtionship
-        }
-
         [ForeignKey("Email")]
-        public string EmailAccount { get; set; }
+        public string Username { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string ProductURL { get; set; } //PK- **comment: I decided to choose as pk because url is unique for each product
         public string Name { get; set; }
         public string Description { get; set; }
@@ -30,6 +24,6 @@ namespace TestTaskCrawler.Models
         public string BackgroundPageColor { get; set; }
 
 
-        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual Account Account { get; set; }
     }
 }

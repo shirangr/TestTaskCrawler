@@ -7,15 +7,10 @@ namespace TestTaskCrawler.Models
 {
     public class Account
     {
-
-        public Account()
-        {
-            this.Products = new List<Product>(); //many to many realtionship
-        }
+        public string AccountId { get; set; }
 
         [EmailAddress]
         [Required(ErrorMessage = "Please specify a user name")]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Display(Name = "Username")]
         public string Email { get; set; }
 
@@ -31,6 +26,6 @@ namespace TestTaskCrawler.Models
         public DateTime LastLoggedIn { get; set; }
 
 
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual List<Product> Products { get; set; }
     }
 }

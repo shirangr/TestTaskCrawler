@@ -1,15 +1,11 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestTaskCrawler.DAL;
-using TestTaskCrawler.LogicLayer;
 
 namespace TestTaskCrawler
 {
@@ -36,17 +32,16 @@ namespace TestTaskCrawler
             });
 
             //db
-            services.AddDbContext<EFContextDB>(options =>
-            options.UseSqlServer(
-                Configuration.GetConnectionString("EFContextDBConnectionString")));
-
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                // services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<EFContextDB>()
-                .AddDefaultTokenProviders();
+            //services.AddDbContext<EFContextDB>(options =>
+            //options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
 
             //identity
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            //    // services.AddDefaultIdentity<IdentityUser>()
+            //    .AddEntityFrameworkStores<EFContextDB>()
+            //    .AddDefaultTokenProviders();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddRazorPagesOptions(options =>
                 {
                     options.AllowAreas = true;
@@ -62,12 +57,12 @@ namespace TestTaskCrawler
             });
 
             // using Microsoft.AspNetCore.Identity.UI.Services;
-            services.AddSingleton<IEmailSender, EmailSender>();  //design patterns**
+            //services.AddSingleton<IEmailSender, EmailSender>();
             //services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
