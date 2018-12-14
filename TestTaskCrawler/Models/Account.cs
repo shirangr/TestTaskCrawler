@@ -10,15 +10,15 @@ namespace TestTaskCrawler.Models
 
         public Account()
         {
-            this.Products = new List<Product>();
+            this.Products = new List<Product>(); //many to many realtionship
         }
 
-        [Required]
         [EmailAddress]
+        [Required(ErrorMessage = "Please specify a user name")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please specify a password")]
         [StringLength(9, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }

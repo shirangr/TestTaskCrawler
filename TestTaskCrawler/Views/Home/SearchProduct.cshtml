@@ -69,7 +69,20 @@
             </tr>
         </tbody>
     </table>
-    }
+
+    @*@{
+        WebGrid grid = new WebGrid(
+                  source: this.Model.acc);
+
+        @: @grid.GetHtml(
+       tableStyle: "grid",
+       columns: grid.Columns(
+        grid.Column("Value", "Address",
+             style: "columnAddress"),
+     grid.Column("Description", "Description",
+             style: "columnDescription")))
+    }*@
+
 </div>
 
 @section Scripts

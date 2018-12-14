@@ -2,6 +2,7 @@
 using TestTaskCrawler.Models;
 using TestTaskCrawler.LogicLayer;
 using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TestTaskCrawler.LogicLayer
 {
@@ -12,24 +13,37 @@ namespace TestTaskCrawler.LogicLayer
         /// </summary>
         /// <param name="usrname"></param>
         /// <param name="pass"></param>
-        public static int AddUser(Account user)
+        public static Account AddUser(Account user)
         {
-            Account usr = new Account() { Username = user.Username, Password = user.Password };
-            int result = 0;
-
             try
             {
-                using (EFContext ctx = new EFContext())
+                Account NewUser = null;
+
+                if ((user == null) || (user.Username == null))
                 {
-                    ctx.Accounts.Add(usr);
-                    result = ctx.SaveChanges();
+                    return null;
                 }
 
-                return result;
+                using (EFContextDB db = new EFContextDB())
+                {
+                    Account User = db.Accounts.Find(user.Username);
+
+                    if (User == null)
+                    {
+                        NewUser = new Account() { Username = user.Username, Password = user.Password };
+                        db.Accounts.Add(NewUser);
+                        db.SaveChanges();
+                    }
+
+                    return NewUser;
+                    
+                }
+
+                return null;
             }
             catch (Exception ex)
             {
-                return result;
+                return null;
             }
         }
 

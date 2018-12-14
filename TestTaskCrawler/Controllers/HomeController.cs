@@ -3,17 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
 using TestTaskCrawler.DAL;
 using TestTaskCrawler.LogicLayer;
+using System.Linq;
 
 namespace TestTaskCrawler.Controllers
 {
     public class HomeController : Controller
     {
+        EFContextDB db = new EFContextDB();
 
         [HttpGet]
         public IActionResult Login()
         {
             ViewData["Title"] = "Login";
-            return View();
+            //return View();
+            return View(db.Accounts.ToList());
         }
 
         [HttpPost]
@@ -23,14 +26,14 @@ namespace TestTaskCrawler.Controllers
 
             if (ModelState.IsValid && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
             {
-                using (var ctx = new EFContext())
+                using (var ctx = new EFContextDB())
                 {
-                    //DbCollectionEntry results = from x in dbo.Accounts
-                    //                              where x.Username == user.Username
-                    //                              && x.password == user.Password
-                    //                              select x;
+                    //var results = from x in db.Accounts
+                    //              where x.Username == user.Username
+                    //              && x.password == user.Password
+                    //              select x;
 
-                    //ctx.Users.SqlQuery("SELECT * FROM dbo.Account WHERE username=@p0 and password=@p1", new params object user.Username);
+                    //ctx.Users.SqlQuery("SELECT * FROM db.Accounts WHERE username=@p0 and password=@p1", new params object user.Username);
 
 
                     //if (results.count>0) //results.username!=null
@@ -149,23 +152,22 @@ namespace TestTaskCrawler.Controllers
         public IActionResult Signup(Account user)
         {
             ViewData["Title"] = "Signup";
-            int AddedUser = 0;
+            Account NewUser = null;
 
             if (ModelState.IsValid)
             {
                 if (user != null && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
                 {
-                    AddedUser = HelperFunctions.AddUser(user);
+                    NewUser = HelperFunctions.AddUser(user);
                 }
 
-                if (AddedUser != 0)
+                if (NewUser != null)
                 {
                     //ViewBag.Username = Request["username"].ToString();
                     //ViewBag.Password = Request["password"].ToString();
                     return RedirectToAction("Login", "Home");
                 }
             }
-
 
             return View();
         }
@@ -175,6 +177,79 @@ namespace TestTaskCrawler.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        //     /// <summary>
+        //     /// 
+        //     /// </summary>
+        //     /// <returns></returns>
+        //     public ActionResult Create()
+        //     {
+        //         PopulateDepartmentsDropDownList();
+        //         return View();
+        //     }
+
+        //     [HttpPost]
+        //     [ValidateAntiForgeryToken]
+        //     public ActionResult Create(
+        //        [Bind(Include = "CourseID,Title,Credits,DepartmentID")]
+        //Course course)
+        //     {
+        //         try
+        //         {
+        //             if (ModelState.IsValid)
+        //             {
+        //                 db.Courses.Add(course);
+        //                 db.SaveChanges();
+        //                 return RedirectToAction("Index");
+        //             }
+        //         }
+        //         catch (DataException /* dex */)
+        //         {
+        //             //Log the error (uncomment dex variable name after DataException and add a line here to write a log.)
+        //             ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+        //         }
+        //         PopulateDepartmentsDropDownList(course.DepartmentID);
+        //         return View(course);
+        //     }
+
+        //     public ActionResult Edit(int id)
+        //     {
+        //         Course course = db.Courses.Find(id);
+        //         PopulateDepartmentsDropDownList(course.DepartmentID);
+        //         return View(course);
+        //     }
+
+        //     [HttpPost]
+        //     [ValidateAntiForgeryToken]
+        //     public ActionResult Edit(
+        //         [Bind(Include = "CourseID,Title,Credits,DepartmentID")]
+        // Course course)
+        //     {
+        //         try
+        //         {
+        //             if (ModelState.IsValid)
+        //             {
+        //                 db.Entry(course).State = EntityState.Modified;
+        //                 db.SaveChanges();
+        //                 return RedirectToAction("Index");
+        //             }
+        //         }
+        //         catch (DataException /* dex */)
+        //         {
+        //             //Log the error (uncomment dex variable name after DataException and add a line here to write a log.)
+        //             ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+        //         }
+        //         PopulateDepartmentsDropDownList(course.DepartmentID);
+        //         return View(course);
+        //     }
+
+        //     private void PopulateDepartmentsDropDownList(object selectedDepartment = null)
+        //     {
+        //         var departmentsQuery = from d in db.Departments
+        //                                orderby d.Name
+        //                                select d;
+        //         ViewBag.DepartmentID = new SelectList(departmentsQuery, "DepartmentID", "Name", selectedDepartment);
+        //     }
 
     }
 }

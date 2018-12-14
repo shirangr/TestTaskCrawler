@@ -9,9 +9,10 @@ namespace TestTaskCrawler.Models
     {
         public Product()
         {
-            this.Accounts = new List<Account>();
+            this.Accounts = new List<Account>(); //many to many realtionship
         }
 
+        [ForeignKey("Username")]
         public string EmailAccount { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
