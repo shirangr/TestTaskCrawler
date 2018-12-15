@@ -1,6 +1,7 @@
 ﻿using TestTaskCrawler.DAL;
 using TestTaskCrawler.Models;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestTaskCrawler.LogicLayer
 {
@@ -15,16 +16,15 @@ namespace TestTaskCrawler.LogicLayer
         {
             try
             {
-                if ((user == null) || (user.Email == null))
-                {
-                    return null;
-                }
+                var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
+                optionsBuilder.UseSqlServer("Data Source=TestTaskCrawlerDB");
 
-                using (var db = new EFContextDB())
+                using (var db = new EFContextDB(optionsBuilder.Options))
                 {
                     // Create and save a new user
-                    var firsttimeloggedin = DateTime.Now;
-                    var NewUser = new Account { Email = user.Email, Password = user.Password, FirstTimeLoggedIn = firsttimeloggedin };
+                    //var firsttimeloggedin = DateTime.Now;
+                    //var NewUser = new Account { Username = user.Username, Password = user.Password, FirstTimeLoggedIn = firsttimeloggedin };
+                    var NewUser = new Account { Username = user.Username, Password = user.Password };
                     db.Accounts.Add(NewUser);
                     db.SaveChanges();
 
@@ -69,10 +69,17 @@ namespace TestTaskCrawler.LogicLayer
             //string rate = rateNode.InnerText;
         }
 
+        internal static bool IsUserExists()
+        {
+            throw new NotImplementedException();
+        }
+
         public static bool IsUserAuthorized(string user)
         {
             return true;
         }
+
+        
     }
 
 }

@@ -1,8 +1,6 @@
-﻿@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv
+﻿@*@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv*@
 @using TestTaskCrawler.Models;
 @model TestTaskCrawler.Models.Account
-@* FOR TESTING - find which is current environment *@
-@*<p> ASPNETCORE_ENVIRONMENT = @hostingEnv.EnvironmentName</p>*@
 
 <div class="container" id="login-wrapper">
     <div class="text-center">
@@ -25,17 +23,13 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.TextBoxFor(model => model.Email, new { @class = "form-control center", @placeholder = "Email Address" })
-            @Html.ValidationMessageFor(model => model.Email)
-            @*@Html.TextBoxFor(model => model.Email, new { @class = "form-control center" , @data - val = "true", @data - val - email = "The Email field is not a valid e-mail address." ,@data - val - required = "Email is required." ,@id = "Email" ,@name = "Email" ,@placeholder = "Email Address" ,@type = "text" ,@value = "" })*@
-            @*<input class="form-control center" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="Email is required." id="Email" name="Email" placeholder="Email Address" type="text" value="">*@
+            @Html.TextBoxFor(model => model.Username, new { @class = "form-control center", @placeholder = "Email Address" })
+            @Html.ValidationMessageFor(model => model.Username)
         </div>
         <div class="form-group">
             @Html.TextBoxFor(model => model.Password, new { @class = "form-control center", @placeholder = "Password"})
             @Html.ValidationMessageFor(model => model.Password)
-            @*<input class="form-control center" data-val="true" data-val-required="Password is required." id="Password" name="Password" placeholder="Password" type="password">*@
             <a class="forgotPassword center" href="Home/ResetPassword">Forgot Password?</a>
-            @*<a class="forgotPassword center" href="ForgotPassword/ResetPassword">Forgot Password?</a>*@
 
         </div>
         <div class="row button-group">
@@ -85,7 +79,6 @@
         </form>*@
 
 </div>
-    </div>
 
 <footer>
     <div>Icons made by <a href="https://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>

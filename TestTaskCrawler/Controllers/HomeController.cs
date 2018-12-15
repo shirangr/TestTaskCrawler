@@ -1,23 +1,24 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
-using TestTaskCrawler.DAL;
 using TestTaskCrawler.LogicLayer;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace TestTaskCrawler.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
+        public IActionResult Index()
+        {
+            //return View();
+            return RedirectToAction("ResetPassword", "Home");
+        }
 
         [HttpGet]
         public IActionResult Login()
         {
             ViewData["Title"] = "Login";
             return View();
-            //return View(db.Accounts.ToList());
         }
 
         [HttpPost]
@@ -40,14 +41,14 @@ namespace TestTaskCrawler.Controllers
                 //using (var ctx = new EFContextDB())
                 //{
                 //var results = from x in db.Accounts
-                //              where x.Email == user.Email
+                //              where x.username == user.username
                 //              && x.password == user.Password
                 //              select x;
 
-                //ctx.Users.SqlQuery("SELECT * FROM db.Accounts WHERE Email=@p0 and password=@p1", new params object user.Email);
+                //ctx.Users.SqlQuery("SELECT * FROM db.Accounts WHERE username=@p0 and password=@p1", new params object user.username);
 
 
-                //if (results.count>0) //results.Email!=null
+                //if (results.count>0) //results.username!=null
                 //{ 
                 //save to db
                 //account.Email = Email;
@@ -70,17 +71,60 @@ namespace TestTaskCrawler.Controllers
             return View();
         }
 
-        public ActionResult ResetPassword(string code, string email)
+        [HttpGet]
+        public ActionResult ResetPassword()
         {
-            //ResetPasswordModel model = new ResetPasswordModel();
-            //model.ReturnToken = code;
-            //return View(model);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(string UserName)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    //if (WebSecurity.UserExists(UserName))
+            //    //{
+            //    string To = UserName, UserID, Password, SMTPPort, Host;
+            //    //string token = WebSecurity.GeneratePasswordResetToken(UserName);
+            //    string token = "";
+            //    if (token == null)
+            //    {
+            //        // If user does not exist or is not confirmed.  
+            //        return View("Index");
+            //    }
+            //    else
+            //    {
+            //        //Create URL with above token  
+            //        var lnkHref = "<a href='" + Url.Action("ResetPassword", "Account", new { email = UserName, code = token }, "http") + "'>Reset Password</a>";
+
+            //        //HTML Template for Send email  
+            //        string subject = "Your changed password";
+            //        string body = "<b>Please find the Password Reset Link. </b><br/>" + lnkHref;
+
+            //        //Get and set the AppSettings using configuration manager.  
+            //        EmailManager.AppSettings(out UserID, out Password, out SMTPPort, out Host);
+
+            //        //Call send email methods.  
+            //        EmailManager.SendEmail(UserID, subject, body, To, UserID, Password, SMTPPort, Host);
+            //    }
+            //    //}
+            //}
 
             return View();
         }
 
+
+        //public ActionResult ResetPassword() //(string code, string email)
+        //{
+        //    //ResetPasswordModel model = new ResetPasswordModel();
+        //    //model.ReturnToken = code;
+        //    //return View(model);
+
+        //    return View();
+        //}
+
         //[HttpPost]
-        //public ActionResult ResetPassword(ResetPasswordModel model)
+        //public ActionResult ResetPassword(ResetPasswordModel model) //(string code, string email)
         //{
         //    if (ModelState.IsValid)
         //    {
@@ -97,53 +141,53 @@ namespace TestTaskCrawler.Controllers
         //    return View(model);
         //}
 
-        public ActionResult ForgotPassword(string UserName)
-        {
-            if (ModelState.IsValid)
-            {
-                //if (WebSecurity.UserExists(UserName))
-                //{
-                //    string To = UserName, UserID, Password, SMTPPort, Host;
-                //    string token = WebSecurity.GeneratePasswordResetToken(UserName);
-                //    if (token == null)
-                //    {
-                //        // If user does not exist or is not confirmed.  
+        //public ActionResult ForgotPassword(string UserName)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //if (WebSecurity.UserExists(UserName))
+        //        //{
+        //        //    string To = UserName, UserID, Password, SMTPPort, Host;
+        //        //    string token = WebSecurity.GeneratePasswordResetToken(UserName);
+        //        //    if (token == null)
+        //        //    {
+        //        //        // If user does not exist or is not confirmed.  
 
-                //        return View("Index");
+        //        //        return View("Index");
 
-                //    }
-                //    else
-                //    {
-                //        //Create URL with above token  
+        //        //    }
+        //        //    else
+        //        //    {
+        //        //        //Create URL with above token  
 
-                //        var lnkHref = "<a href='" + Url.Action("ResetPassword", "Account", new { email = UserName, code = token }, "http") + "'>Reset Password</a>";
-
-
-                //        //HTML Template for Send email  
-
-                //        string subject = "Your changed password";
-
-                //        string body = "<b>Please find the Password Reset Link. </b><br/>" + lnkHref;
+        //        //        var lnkHref = "<a href='" + Url.Action("ResetPassword", "Account", new { email = UserName, code = token }, "http") + "'>Reset Password</a>";
 
 
-                //        //Get and set the AppSettings using configuration manager.  
+        //        //        //HTML Template for Send email  
 
-                //        EmailManager.AppSettings(out UserID, out Password, out SMTPPort, out Host);
+        //        //        string subject = "Your changed password";
+
+        //        //        string body = "<b>Please find the Password Reset Link. </b><br/>" + lnkHref;
 
 
-                //        //Call send email methods.  
+        //        //        //Get and set the AppSettings using configuration manager.  
 
-                //        EmailManager.SendEmail(UserID, subject, body, To, UserID, Password, SMTPPort, Host);
+        //        //        EmailManager.AppSettings(out UserID, out Password, out SMTPPort, out Host);
 
-                //    }
 
-                //}
+        //        //        //Call send email methods.  
 
-            }
-            return View();
-        }
+        //        //        EmailManager.SendEmail(UserID, subject, body, To, UserID, Password, SMTPPort, Host);
 
-        
+        //        //    }
+
+        //        //}
+
+        //    }
+        //    return View();
+        //}
+
+
         //public IActionResult SearchProduct(string emailUser,string productUrl)
         //public IActionResult SearchProduct(Account user, string productUrl)
         [HttpPost]
@@ -177,7 +221,7 @@ namespace TestTaskCrawler.Controllers
         }
 
         [HttpGet]
-        public IActionResult Signup(string productUrl)
+        public IActionResult Signup()
         {
             return View();
         }
