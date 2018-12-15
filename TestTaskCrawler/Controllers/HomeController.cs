@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
 using TestTaskCrawler.LogicLayer;
+using Microsoft.EntityFrameworkCore;
+using TestTaskCrawler.DAL;
 
 namespace TestTaskCrawler.Controllers
 {
@@ -28,46 +30,9 @@ namespace TestTaskCrawler.Controllers
 
             if (ModelState.IsValid && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
             {
-                //var query = from b in db.Accounts
-                //            orderby b.Email
-                //            select b;
-
-                //if (query!=null) //not exists
-                //{
-
-                //}
-
-
-                //using (var ctx = new EFContextDB())
-                //{
-                //var results = from x in db.Accounts
-                //              where x.username == user.username
-                //              && x.password == user.Password
-                //              select x;
-
-                //ctx.Users.SqlQuery("SELECT * FROM db.Accounts WHERE username=@p0 and password=@p1", new params object user.username);
-
-
-                //if (results.count>0) //results.username!=null
-                //{ 
-                //save to db
-                //account.Email = Email;
-
-                //if (account.FirstTimeLoggedIn == null)
-                //{
-                //    var firsttimeloggedin = DateTime.UtcNow;
-                //}
-
-                //account.lastloggedin = DateTime.UtcNow;
-
-                //ctx.SaveChanges();
-
-                //    return RedirectToAction("SearchProduct", "Home");
-                //}
-                //}
+                
             }
 
-            //ViewBag.Account = NewUser;
             return View();
         }
 
@@ -191,33 +156,26 @@ namespace TestTaskCrawler.Controllers
         //public IActionResult SearchProduct(string emailUser,string productUrl)
         //public IActionResult SearchProduct(Account user, string productUrl)
         [HttpPost]
-        public IActionResult SearchProduct(string productUrl)
+        public IActionResult SearchProduct(string ProductUrl)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrEmpty(ProductUrl))
             {
-                //using (var ctx = new EFContext())
-                //{
-                //    //check if already exists
-                //    var productExistsDetails = (from x in ctx.Products
-                //                                where x.productUrl == productUrl
-                //                                orderby x.date
-                //                                select x).ToList(); 
-
-                //}
-                //if (productExistsDetails.count > 0) //results.Email!=null
-                //{
-                //    return View(productExistsDetails.tolist());
-                //}
-
-                //var productSearchedDetails = GetProductDetailsByAddress(productUrl);
-                //if (productSearchedDetails != null)
-                //{
-                //    return View(productSearchedDetails.tolist());
-                //}
-
+                Crawler.GetProductDetailsByUrl(ProductUrl);
+                return View();
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult ShowAllProducts()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
+            optionsBuilder.UseSqlServer("Data Source=TestTaskCrawlerDB");
+
+            var entities = new EFContextDB(optionsBuilder.Options).Products.;
+
+            return View(entities.Products.ToList());
         }
 
         [HttpGet]

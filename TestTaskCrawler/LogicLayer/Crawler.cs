@@ -1,57 +1,60 @@
-﻿using System;
-using System.IO;
+﻿using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
+using TestTaskCrawler.DAL;
+using TestTaskCrawler.Models;
 
 namespace TestTaskCrawler.LogicLayer
 {
-    public class Downloader
+    public class Crawler
     {
-        private readonly HttpClient _httpClient;
-
-        public Downloader(HttpClient httpClient)
+        /// <summary>
+        /// Gets product details by given url address
+        /// </summary>
+        /// <param name="ProductUrl"></param>
+        public static void GetProductDetailsByUrl(string ProductUrl)
         {
-            _httpClient = httpClient;
-        }
-
-        public static string GetHtmlByUrl(Uri urlAddress)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            StreamReader readStream = null;
-
             try
             {
-                if (response.StatusCode == HttpStatusCode.OK) //success
+                //TODO: each website has an Encoding. get encoding by attribute charset
+                //<html head meta charset=> encoding
+                //<style - body - background-color> background color of current html page
+
+                //Uri ProductUri = new Uri(ProductUrl);
+
+                WebClient client = new WebClient();
+                HtmlDocument doc = new HtmlDocument();
+                String html = client.DownloadString(ProductUrl);
+                html = html.Replace("<br>", "\r\n"); // Replace all html breaks for line seperators.
+                doc.LoadHtml(html);
+
+                //Get data
+                string Title = doc.DocumentNode.SelectNodes("//h1[@itemprop='name']").First().InnerHtml;
+                string Description = doc.DocumentNode.SelectNodes("//div[@id='Description']").First().InnerHtml;
+                char[] charsToTrim = { '₪' };
+                decimal Price = Decimal.Parse(doc.DocumentNode.SelectNodes("//span[@class='price']").First().InnerHtml.Trim(charsToTrim).Trim());
+                string Image = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
+                string BackgroundPageColor = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
+
+                var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestTaskCrawler.EFContextDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+
+                //add new
+                using (var context = new EFContextDB(optionsBuilder.Options))
                 {
-                    Stream receiveStream = response.GetResponseStream(); 
-
-                    if (response.CharacterSet == null)
-                    {
-                        readStream = new StreamReader(receiveStream);
-                    }
-                    else
-                    {
-                        readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
-                    }
-                    
-                    return readStream.ReadToEnd(); //get html page data
+                    Product pro = new Product { ProductURL = ProductUrl, Name = Title, Description = Description, Condition = "not available", Price = Price, ShippingPrice = 0, ImagePath = Image, BackgroundPageColor = "" };
+                    context.Add(pro);
+                    context.SaveChanges();
                 }
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-                return "";
-            }
-            catch (Exception)
-            {
-                return "";
-            }
-            finally
-            {
-                response.Dispose();
-                readStream.Dispose();
-                response.Close();
-                readStream.Close();
-            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using TestTaskCrawler.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace TestTaskCrawler.LogicLayer
 {
@@ -22,8 +23,6 @@ namespace TestTaskCrawler.LogicLayer
                 using (var db = new EFContextDB(optionsBuilder.Options))
                 {
                     // Create and save a new user
-                    //var firsttimeloggedin = DateTime.Now;
-                    //var NewUser = new Account { Username = user.Username, Password = user.Password, FirstTimeLoggedIn = firsttimeloggedin };
                     var NewUser = new Account { Username = user.Username, Password = user.Password };
                     db.Accounts.Add(NewUser);
                     db.SaveChanges();
@@ -39,20 +38,6 @@ namespace TestTaskCrawler.LogicLayer
             }
         }
 
-        /// <summary>
-        /// returns product details from db/from web
-        /// </summary>
-        /// <param name="productUrl"></param>
-        public static void GetProductDetailsByUrl(string productUrl)
-        {
-            //var crawler = new WebCrawler(new Downloader(new HttpClient()), new Uri(productUrl));
-            //return crawler.Run(5);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
         public static void GetHtmlFromURL(string productUrl)
         {
             //full page
@@ -74,12 +59,59 @@ namespace TestTaskCrawler.LogicLayer
             throw new NotImplementedException();
         }
 
-        public static bool IsUserAuthorized(string user)
+        public static IQueryable<Product> GetAllProducts(Account user)
         {
-            return true;
+            try
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestTaskCrawler.EFContextDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+
+                //add new
+                using (var context = new EFContextDB(optionsBuilder.Options))
+                {
+                    //var query = from x in context.Products
+                    //            where x.username == user.username
+                    //            orderby by x.name
+                    //            select x;
+
+                    var query = context.Products.FromSql("SELECT * FROM Products WHERE username=@p0 order by Name Asc", new object[] { user.Username });
+
+                    if (query != null)
+                    {
+                        return query;
+                    }
+
+
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw ex;
+            }
+
         }
 
-        
+
+        //db
+        //using (var context = new BloggingContext())
+        //{
+        //    // add
+        //    context.Blogs.Add(new Blog { Url = "http://sample.com/blog_one" });
+        //    context.Blogs.Add(new Blog { Url = "http://sample.com/blog_two" });
+
+        //    // update
+        //    var firstBlog = context.Blogs.First();
+        //    firstBlog.Url = "";
+
+        //    // remove
+        //    var lastBlog = context.Blogs.Last();
+        //    context.Blogs.Remove(lastBlog);
+
+        //    context.SaveChanges();
+        //}
     }
 
 }

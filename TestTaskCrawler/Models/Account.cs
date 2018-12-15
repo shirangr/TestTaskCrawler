@@ -8,7 +8,7 @@ namespace TestTaskCrawler.Models
 {
     public class Account //: IdentityUser
     {
-        public string UserId { get; set; }
+        public int ID { get; set; }
 
         [Key]
         [EmailAddress]
@@ -20,17 +20,8 @@ namespace TestTaskCrawler.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        //[NotMapped]
-        [DisplayFormat(DataFormatString = "{dd-MM-yyyy}")]
-        public DateTime FirstTimeLoggedIn { get; set; }
 
-        //[NotMapped]
-        [DisplayFormat(DataFormatString = "{dd-MM-yyyy}")]
-        public DateTime? LastLoggedIn { get; set; }
-
-
-        //public int Account_ProductId { get; set; }
-
-        //public Product Account_Product { get; set; }
+        
+        public ICollection<Product> Products { get; set; }
     }
 }
