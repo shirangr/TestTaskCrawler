@@ -14,6 +14,7 @@ namespace TestTaskCrawler.LogicLayer
         /// Gets product details by given url address
         /// </summary>
         /// <param name="ProductUrl"></param>
+        /// <example>https://toysrus.co.il/%D7%91%D7%A0%D7%95%D7%AA/%D7%91%D7%A8%D7%91%D7%99-%D7%91%D7%AA-%D7%94%D7%99%D7%9D-%D7%A6%D7%91%D7%A2%D7%99-%D7%94%D7%A7%D7%A9%D7%AA.html</example>
         public static void GetProductDetailsByUrl(string ProductUrl)
         {
             try

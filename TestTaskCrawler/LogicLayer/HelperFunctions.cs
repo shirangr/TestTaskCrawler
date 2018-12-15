@@ -37,28 +37,12 @@ namespace TestTaskCrawler.LogicLayer
                 return null;
             }
         }
-
-        public static void GetHtmlFromURL(string productUrl)
-        {
-            //full page
-            //HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("http://www.domain.com/");
-            //HttpWebResponse WebResp = (HttpWebResponse)WebReq.GetResponse();
-            //Stream response = WebResp.GetResponseStream();
-            //StreamReader data = new StreamReader(response);
-            //string result = data.ReadToEnd();
-
-            //specific div from page
-            //HtmlWeb web = new HtmlWeb();
-            //HtmlDocument doc = web.Load("http://jsbin.com/owobe3");
-            //HtmlNode rateNode = doc.DocumentNode.SelectSingleNode("//div[@id='rate']");
-            //string rate = rateNode.InnerText;
-        }
-
-        internal static bool IsUserExists()
-        {
-            throw new NotImplementedException();
-        }
-
+        
+        /// <summary>
+        /// Gets all products
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public static IQueryable<Product> GetAllProducts(Account user)
         {
             try
