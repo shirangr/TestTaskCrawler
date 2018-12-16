@@ -129,6 +129,7 @@ namespace TestTaskCrawler
                     name: "Signup",
                     template: "{controller=Home}/{action=Signup}/{id?}");
 
+                //routes.MapWebApiRoute("ProductsApi", "api/{controller}/{id?}");
             });
         }
 
