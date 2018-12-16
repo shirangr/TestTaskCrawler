@@ -4,16 +4,20 @@ using TestTaskCrawler.Models;
 using TestTaskCrawler.LogicLayer;
 using Microsoft.EntityFrameworkCore;
 using TestTaskCrawler.DAL;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace TestTaskCrawler.Controllers
 {
     public class HomeController : Controller
     {
+
         [HttpGet]
         public IActionResult Index()
         {
-            //return View();
-            return RedirectToAction("ResetPassword", "Home");
+            return View();
         }
 
         [HttpGet]
@@ -30,7 +34,7 @@ namespace TestTaskCrawler.Controllers
 
             if (ModelState.IsValid && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
             {
-                
+
             }
 
             return View();
@@ -77,7 +81,6 @@ namespace TestTaskCrawler.Controllers
 
             return View();
         }
-
 
         //public ActionResult ResetPassword() //(string code, string email)
         //{
@@ -155,27 +158,38 @@ namespace TestTaskCrawler.Controllers
 
         //public IActionResult SearchProduct(string emailUser,string productUrl)
         //public IActionResult SearchProduct(Account user, string productUrl)
+
+
+        [HttpGet]
+        public IActionResult SearchProduct()
+        {
+            ViewData["Title"] = "Search Product";
+
+            //get all products
+            //example
+
+            ViewBag.Username = "shirangrosu@gmail.com";
+            //var allproducts = HelperFunctions.GetAllProducts(ViewBag.Username);
+
+            //if (allproducts != null)
+            //{
+            //    return View(allproducts);
+            //}
+
+            return View();
+
+        }
+
         [HttpPost]
         public IActionResult SearchProduct(string ProductUrl)
         {
+            //get product
             if (ModelState.IsValid && !string.IsNullOrEmpty(ProductUrl))
             {
-                Crawler.GetProductDetailsByUrl(ProductUrl);
                 return View();
             }
-
+            
             return View();
-        }
-
-        [HttpGet]
-        public ActionResult ShowAllProducts()
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
-            optionsBuilder.UseSqlServer("Data Source=TestTaskCrawlerDB");
-
-            var entities = new EFContextDB(optionsBuilder.Options).Products.;
-
-            return View(entities.Products.ToList());
         }
 
         [HttpGet]
@@ -208,5 +222,99 @@ namespace TestTaskCrawler.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+
+
+    }
+
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductsController : ControllerBase
+    {
+        private readonly EFContextDB _context;
+
+
+        public ProductsController(EFContextDB context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        //[Produces(typeof(List<Product>))]
+        public async Task<ActionResult<ICollection<Product>>> GetAllProducts()
+        {
+            //return await _context.Products.ToListAsync();
+            //return await _context.Products.ToList<Product>();
+
+            return null;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetProductDetailsByUrl(long id)
+        {
+            //var result = await _context.Products.FindAsync(id);
+
+            //if (result == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return result;
+
+            return null;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Product>> addProductAsync(Product product)
+        {
+            _context.Products.Append<Product>(product);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetProductDetailsByUrl", new { id = product.ID }, product);
+        }
+
+        /// <summary>
+        /// Gets all products
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        //public static List<Product> GetAllProducts(string username)
+        //{
+        //    try
+        //    {
+        //        List<Product> allproducts = null;
+
+        //        var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
+        //        optionsBuilder.UseSqlServer("Server=.;Database=TestTaskCrawler.EFContextDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+
+        //        //add new
+        //        using (var context = new EFContextDB(optionsBuilder.Options))
+        //        {
+        //            if (context.Products != null)
+        //            {
+        //                var query = from x in context.Products
+        //                            where x.Username == username
+        //                            orderby x.Name
+        //                            select x;
+
+        //                //var query = context.Products.FromSql("SELECT * FROM Products WHERE username=@p0 order by Name Asc", new object[] { username });
+
+        //                if (query != null)
+        //                {
+        //                    allproducts = query.ToList<Product>();
+        //                }
+        //            }
+
+        //            return allproducts;
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return null;
+        //        throw ex;
+        //    }
+
+        //}
     }
 }

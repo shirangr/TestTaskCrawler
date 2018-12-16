@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using TestTaskCrawler.Models;
 
 namespace TestTaskCrawler.DAL
 {
 
-    public class EFContextDB : DbContext //: IdentityDbContext
+    public class EFContextDB : IdentityDbContext
     {
-        public DbSet<Account> Accounts { get; set; }
+        public IEnumerable<Account> Accounts { get; set; }
 
-        public DbSet<Product> Products { get; set; }
+        public IEnumerable<Product> Products { get; set; }
 
 
         public EFContextDB(DbContextOptions<EFContextDB> options)
@@ -37,7 +38,7 @@ namespace TestTaskCrawler.DAL
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=TestTaskCrawlerDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(@".;Database=TestTaskCrawler.EFContextDB;Trusted_Connection=True;");
             }
         }
     }

@@ -1,96 +1,67 @@
-﻿@*@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv*@
+﻿@page "{id:int?}"
 @using TestTaskCrawler.Models;
-@model TestTaskCrawler.Models.Product
+@model TestTaskCrawler.Models.Account
 
 
-<div class="container" id="login-wrapper">
-
-    <div class="text-center">
-        <h1 class="display-4">Search Products</h1>
-        <img src="~/images/searchIcon.PNG" class="center" />
-    </div>
-
-    <nav class="navbar navbar-light bg-light">
-        <form class="form-inline" action="/home/Search" method="post">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Product</button>
-        </form>
-    </nav>
-    <table id="assets-data-table"
-           class="table table-striped table-bordered"
-           style="width:100%">
-        <thead colspan="2" align="center">Product Details</thead>
-        <thead>
-            <tr>
-                <th>Product URL</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Condition</th>
-                <th>Price</th>
-                <th>ShippingPrice</th>
-                <th>ImagePath</th>
-                <th>LastViewed</th>
-                <th>BackgroundPageColor</th>
-            </tr>
-        </thead>
-        <tbody>
-            @*@if (this.Model.Products != null)
-                {
-
-                }
-                @if (this.Model.Products.Count > 0)
-                {
-                    foreach (Product item in this.Model)
-                    {
-                        <tr>
-                            <td>@item.ProductURL</td>
-                            <td>@item.Name</td>
-                            <td>@item.Description</td>
-                            <td>@item.Condition</td>
-                            <td>@item.Price</td>
-                            <td>@item.ShippingPrice</td>
-                            <td>@item.ImagePath</td>
-                            <td>@item.LastViewed</td>
-                            <td>@item.BackgroundPageColor</td>
-                        </tr>
-                    }
-                }*@
-
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
-
-    @*@{
-        WebGrid grid = new WebGrid(
-                  source: this.Model.acc);
-
-        @: @grid.GetHtml(
-       tableStyle: "grid",
-       columns: grid.Columns(
-        grid.Column("Value", "Address",
-             style: "columnAddress"),
-     grid.Column("Description", "Description",
-             style: "columnDescription")))
-    }*@
-
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
 </div>
 
-@section Scripts
-    {
-    <script type="text/javascript">
-        $(document).ready(function () {
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-            $('#assets-data-table').DataTable();
-        });
-    </script>
-}
+        <form class="form-inline my-2 my-lg-0" asp-action="Index">
+            <input class="form-control mr-sm-2" id="searchline" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <br />
+            <br />
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Product URL</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Condition</th>
+                        <th>Price</th>
+                        <th>ShippingPrice</th>
+                        <th>ImagePath</th>
+                        <th>LastViewed</th>
+                        <th>BackgroundPageColor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*@if (Model == null)
+                    {
+
+                    }
+                    else
+                    {
+                        if (Model.Products == null)
+                        {
+
+                        }
+                        else
+                        {
+                            foreach (var item in Model.Products)
+                            {
+                                <tr>
+                                    <td>@item.ProductURL</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.Condition</td>
+                                    <td>@item.Price</td>
+                                    <td>@item.ShippingPrice</td>
+                                    <td>@item.ImagePath</td>
+                                    <td>@item.BackgroundPageColor</td>
+                                </tr>
+                            }
+                        }
+
+                    }*@
+                </tbody>
+            </table>
+        </form>
+
+
+    </div>
+</nav>

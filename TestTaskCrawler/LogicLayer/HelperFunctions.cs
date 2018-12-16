@@ -3,6 +3,8 @@ using TestTaskCrawler.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using HtmlAgilityPack;
+using System.Net;
 
 namespace TestTaskCrawler.LogicLayer
 {
@@ -18,13 +20,13 @@ namespace TestTaskCrawler.LogicLayer
             try
             {
                 var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
-                optionsBuilder.UseSqlServer("Data Source=TestTaskCrawlerDB");
+                optionsBuilder.UseSqlServer("Data Source=TestTaskCrawler.EFContextDB");
 
                 using (var db = new EFContextDB(optionsBuilder.Options))
                 {
                     // Create and save a new user
                     var NewUser = new Account { Username = user.Username, Password = user.Password };
-                    db.Accounts.Add(NewUser);
+                    db.Accounts.Append<Account>(NewUser);
                     db.SaveChanges();
 
                     return NewUser;
@@ -37,65 +39,53 @@ namespace TestTaskCrawler.LogicLayer
                 return null;
             }
         }
-        
-        /// <summary>
-        /// Gets all products
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public static IQueryable<Product> GetAllProducts(Account user)
+
+    }
+
+}
+
+
+public class Crawler
+{
+    /// <summary>
+    /// Gets product details by given url address
+    /// </summary>
+    /// <param name="ProductUrl"></param>
+    /// <example>https://toysrus.co.il/%D7%91%D7%A0%D7%95%D7%AA/%D7%91%D7%A8%D7%91%D7%99-%D7%91%D7%AA-%D7%94%D7%99%D7%9D-%D7%A6%D7%91%D7%A2%D7%99-%D7%94%D7%A7%D7%A9%D7%AA.html</example>
+    public static Product GetProductDetailsByUrl(string ProductUrl)
+    {
+        try
         {
-            try
-            {
-                var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestTaskCrawler.EFContextDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+            //TODO: each website has an Encoding. get encoding by attribute charset
+            //<html head meta charset=> encoding
+            //<style - body - background-color> background color of current html page
 
-                //add new
-                using (var context = new EFContextDB(optionsBuilder.Options))
-                {
-                    //var query = from x in context.Products
-                    //            where x.username == user.username
-                    //            orderby by x.name
-                    //            select x;
+            //Uri ProductUri = new Uri(ProductUrl);
 
-                    var query = context.Products.FromSql("SELECT * FROM Products WHERE username=@p0 order by Name Asc", new object[] { user.Username });
+            WebClient client = new WebClient();
+            HtmlDocument doc = new HtmlDocument();
+            String html = client.DownloadString(ProductUrl);
+            html = html.Replace("<br>", "\r\n"); // Replace all html breaks for line seperators.
+            doc.LoadHtml(html);
 
-                    if (query != null)
-                    {
-                        return query;
-                    }
+            //Get data
+            string Title = doc.DocumentNode.SelectNodes("//h1[@itemprop='name']").First().InnerHtml;
+            string Description = doc.DocumentNode.SelectNodes("//div[@id='Description']").First().InnerHtml;
+            char[] charsToTrim = { '₪' };
+            decimal Price = Decimal.Parse(doc.DocumentNode.SelectNodes("//span[@class='price']").First().InnerHtml.Trim(charsToTrim).Trim());
+            string Image = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
+            string BackgroundPageColor = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
 
+            Product product = new Product { ProductURL = ProductUrl, Name = Title, Description = Description, Condition = "not available", Price = Price, ShippingPrice = 0, ImagePath = Image, BackgroundPageColor = "" };
 
-                    return null;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw ex;
-            }
+            return product;
 
         }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
 
-
-        //db
-        //using (var context = new BloggingContext())
-        //{
-        //    // add
-        //    context.Blogs.Add(new Blog { Url = "http://sample.com/blog_one" });
-        //    context.Blogs.Add(new Blog { Url = "http://sample.com/blog_two" });
-
-        //    // update
-        //    var firstBlog = context.Blogs.First();
-        //    firstBlog.Url = "";
-
-        //    // remove
-        //    var lastBlog = context.Blogs.Last();
-        //    context.Blogs.Remove(lastBlog);
-
-        //    context.SaveChanges();
-        //}
     }
 
 }

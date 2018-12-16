@@ -1,16 +1,59 @@
-﻿body {
-    /*padding-top: 50px;*/
-    padding-bottom: 20px;
-    background-color: #232323;
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    height: 60px;
+    line-height: 60px;
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 #iconSearch {
     width: 50%;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
 }
 
 #login-wrapper {
@@ -42,3 +85,19 @@
 /*mobile - for smaller screens */
 @media screen and (max-width: 767px) {
 }
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/*body {
+    padding-bottom: 20px;
+    background-color: #232323;
+}*/
+/*.body-content {
+    padding-left: 15px;
+    padding-right: 15px
+}
+}*/

@@ -32,9 +32,12 @@ namespace TestTaskCrawler
             });
 
             //db
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=TestTaskCrawlerDB;Trusted_Connection=True;";
-            services.AddDbContext<EFContextDB>
-                (options => options.UseSqlServer(connection));
+            services.AddDbContext<EFContextDB>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<EFContextDB>();
 
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddDefaultUI(UIFramework.Bootstrap4)
@@ -72,7 +75,7 @@ namespace TestTaskCrawler
             //    options.SlidingExpiration = true;
             //});
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,8 +98,8 @@ namespace TestTaskCrawler
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseCookiePolicy(); //for cookies
-            //app.UseAuthentication(); //for identity
+            app.UseCookiePolicy(); //for cookies
+            app.UseAuthentication(); //for identity
             app.UseMvc();
 
 
