@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -129,9 +130,12 @@ namespace TestTaskCrawler
                     name: "Signup",
                     template: "{controller=Home}/{action=Signup}/{id?}");
 
-                //routes.MapWebApiRoute("ProductsApi", "api/{controller}/{id?}");
-            });
-        }
+                routes.MapRoute(
+                         name: "ProductsApi",
+                         template: "api/{controller}/{id?}");
 
+            });
+
+        }
     }
 }

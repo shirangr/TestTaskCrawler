@@ -188,6 +188,14 @@ namespace TestTaskCrawler.Controllers
             //get product
             if (ModelState.IsValid && !string.IsNullOrEmpty(ProductUrl))
             {
+                //return View();
+
+                Product product = ProductsController.GetProductDetailsByUrl(ProductUrl);
+                if (product != null)
+                {
+                    return RedirectToAction("addProductAsync","Products");
+                }
+
                 return View();
             }
 
