@@ -247,14 +247,21 @@ namespace TestTaskCrawler.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        //[HttpGet]
         //[Produces(typeof(List<Product>))]
-        public async Task<ActionResult<ICollection<Product>>> GetAllProducts()
-        {
-            //return await _context.Products.ToListAsync();
-            //return await _context.Products.ToList<Product>();
+        //public async Task<ActionResult<List<Product>>> GetAllProducts()
+        //{
+        //    //return await _context.Products.ToListAsync();
+        //    //return await _context.Products.ToList<Product>();
+        //    //return await _context.Products.ToList<Task<ActionResult<Product>>>();
 
-            return null;
+        //    return await _context.Products.ToListAsync().GetAwaiter().;
+        //}
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
+        {
+            return await Task.Run(() => _context.Products.ToList<Product>());
         }
 
         [HttpGet("{id}")]
