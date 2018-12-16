@@ -18,7 +18,7 @@ namespace TestTaskCrawler.Models
         public string BackgroundPageColor { get; set; }
 
 
-        public string Username { get; set; }
-        public Account Account { get; set; }
+        //public string Username { get; set; }
+        //public Account Account { get; set; }
     }
 }

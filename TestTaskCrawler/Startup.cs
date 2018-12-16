@@ -36,10 +36,7 @@ namespace TestTaskCrawler
             services.AddDbContext<EFContextDB>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddDbContext<EFContextDB>(opt =>
-                opt.UseInMemoryDatabase("ProductList"));
-
+            
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<EFContextDB>();
@@ -102,6 +99,7 @@ namespace TestTaskCrawler
             }
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy(); //for cookies
             app.UseAuthentication(); //for identity

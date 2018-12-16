@@ -10,9 +10,11 @@ using System.Linq;
 using System;
 using System.Net;
 using HtmlAgilityPack;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestTaskCrawler.Controllers
 {
+    //[Authorize]
     public class HomeController : Controller
     {
 
@@ -167,17 +169,7 @@ namespace TestTaskCrawler.Controllers
         {
             ViewData["Title"] = "Search Product";
 
-            //get all products
-            //example
-
-            ViewBag.Username = "shirangrosu@gmail.com";
-            //var allproducts = HelperFunctions.GetAllProducts(ViewBag.Username);
-
-            //if (allproducts != null)
-            //{
-            //    return View(allproducts);
-            //}
-
+            //ViewBag.Username = "shirangrosu@gmail.com";
             return View();
 
         }
@@ -193,7 +185,8 @@ namespace TestTaskCrawler.Controllers
                 Product product = ProductsController.GetProductDetailsByUrl(ProductUrl);
                 if (product != null)
                 {
-                    return RedirectToAction("addProductAsync","Products");
+                    RedirectToActionResult redirectResult = new RedirectToActionResult("addProductAsync", "Products", product);
+                    return redirectResult;
                 }
 
                 return View();
@@ -241,22 +234,10 @@ namespace TestTaskCrawler.Controllers
     {
         private readonly EFContextDB _context;
 
-
         public ProductsController(EFContextDB context)
         {
             _context = context;
         }
-
-        //[HttpGet]
-        //[Produces(typeof(List<Product>))]
-        //public async Task<ActionResult<List<Product>>> GetAllProducts()
-        //{
-        //    //return await _context.Products.ToListAsync();
-        //    //return await _context.Products.ToList<Product>();
-        //    //return await _context.Products.ToList<Task<ActionResult<Product>>>();
-
-        //    return await _context.Products.ToListAsync().GetAwaiter().;
-        //}
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
