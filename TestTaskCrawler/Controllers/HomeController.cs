@@ -2,21 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
 using TestTaskCrawler.LogicLayer;
-using Microsoft.EntityFrameworkCore;
 using TestTaskCrawler.DAL;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System;
-using System.Net;
-using HtmlAgilityPack;
-using Microsoft.AspNetCore.Authorization;
 
 namespace TestTaskCrawler.Controllers
 {
     //[Authorize]
     public class HomeController : Controller
     {
+        private readonly EFContextDB _context;
+
+        public HomeController(EFContextDB context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         public IActionResult Index()
@@ -180,16 +178,13 @@ namespace TestTaskCrawler.Controllers
             //get product
             if (ModelState.IsValid && !string.IsNullOrEmpty(ProductUrl))
             {
-                //return View();
+                //Product product = ProductsController.GetProductDetailsByUrl(ProductUrl);
+                ////ViewBag.username = "shirangrosu@gmail.com";
 
-                Product product = ProductsController.GetProductDetailsByUrl(ProductUrl);
-                if (product != null)
-                {
-                    RedirectToActionResult redirectResult = new RedirectToActionResult("addProductAsync", "Products", product);
-                    return redirectResult;
-                }
+                //ProductsController proc = new ProductsController(_context);
+                //var request = proc.addProductAsync(product);
 
-                return View();
+                //return View(request);
             }
 
             return View();
@@ -228,7 +223,7 @@ namespace TestTaskCrawler.Controllers
     }
 
 
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -239,75 +234,82 @@ namespace TestTaskCrawler.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
-        {
-            return await Task.Run(() => _context.Products.ToList<Product>());
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
+        //{
+        //    return await Task.Run(() => _context.Products.ToList<Product>());
+        //}
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProductDetailsById(long id)
-        {
-            //var result = await _context.Products.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Product>> GetProductDetailsById(long id)
+        //{
+        //    var Id = (int)id;
+        //    var result = await Task.Run(() => _context.Products.FirstOrDefault<Product>(m => m.ID == Id));
 
-            //if (result == null)
-            //{
-            //    return NotFound();
-            //}
+        //    if (result == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            //return result;
+        //    return result;
+        //}
 
-            return null;
-        }
+        ////[HttpPost]
+        ////public async Task<ActionResult<Product>> addProductAsync(Product product)
+        ////{
+        ////    _context.Products.Append<Product>(product);
+        ////    await _context.SaveChangesAsync();
 
-        [HttpPost]
-        public async Task<ActionResult<Product>> addProductAsync(Product product)
-        {
-            _context.Products.Append<Product>(product);
-            await _context.SaveChangesAsync();
+        ////    return CreatedAtAction("GetProductDetailsByUrl", new { id = product.ID }, product);
+        ////}
 
-            return CreatedAtAction("GetProductDetailsByUrl", new { id = product.ID }, product);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult<Product>> addProductAsync([FromBody]Product product)
+        //{
+        //    _context.Products.Append<Product>(product);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("GetProductDetailsById", "Products", new { id = product.ID }, product);
+        //}
+
+        //public static Product GetProductDetailsByUrl(string ProductUrl)
+        //{
+        //    try
+        //    {
+        //        //TODO: each website has an Encoding. get encoding by attribute charset
+        //        //<html head meta charset=> encoding
+        //        //<style - body - background-color> background color of current html page
+
+        //        //Uri ProductUri = new Uri(ProductUrl);
+
+        //        WebClient client = new WebClient();
+        //        HtmlDocument doc = new HtmlDocument();
+        //        String html = client.DownloadString(ProductUrl);
+        //        html = html.Replace("<br>", "\r\n"); // Replace all html breaks for line seperators.
+        //        doc.LoadHtml(html);
+
+        //        //Get data
+        //        string Title = doc.DocumentNode.SelectNodes("//h1[@itemprop='name']").First().InnerHtml;
+        //        string Description = doc.DocumentNode.SelectNodes("//div[@id='Description']").First().InnerHtml;
+        //        char[] charsToTrim = { '₪' };
+        //        decimal Price = Decimal.Parse(doc.DocumentNode.SelectNodes("//span[@class='price']").First().InnerHtml.Trim(charsToTrim).Trim());
+        //        string Image = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
+        //        string BackgroundPageColor = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
+
+        //        var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
+        //        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WebApplicationCrawler.ApplicationDbContext;Trusted_Connection=True;MultipleActiveResultSets=true");
 
 
-        public static Product GetProductDetailsByUrl(string ProductUrl)
-        {
-            try
-            {
-                //TODO: each website has an Encoding. get encoding by attribute charset
-                //<html head meta charset=> encoding
-                //<style - body - background-color> background color of current html page
+        //        Product product = new Product { ProductURL = ProductUrl, Name = Title, Description = Description, Condition = "not available", Price = Price, ShippingPrice = 0, ImagePath = Image, BackgroundPageColor = "" };
+        //        return product;
 
-                //Uri ProductUri = new Uri(ProductUrl);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
 
-                WebClient client = new WebClient();
-                HtmlDocument doc = new HtmlDocument();
-                String html = client.DownloadString(ProductUrl);
-                html = html.Replace("<br>", "\r\n"); // Replace all html breaks for line seperators.
-                doc.LoadHtml(html);
-
-                //Get data
-                string Title = doc.DocumentNode.SelectNodes("//h1[@itemprop='name']").First().InnerHtml;
-                string Description = doc.DocumentNode.SelectNodes("//div[@id='Description']").First().InnerHtml;
-                char[] charsToTrim = { '₪' };
-                decimal Price = Decimal.Parse(doc.DocumentNode.SelectNodes("//span[@class='price']").First().InnerHtml.Trim(charsToTrim).Trim());
-                string Image = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
-                string BackgroundPageColor = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
-
-                var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WebApplicationCrawler.ApplicationDbContext;Trusted_Connection=True;MultipleActiveResultSets=true");
-
-
-                Product product = new Product { ProductURL = ProductUrl, Name = Title, Description = Description, Condition = "not available", Price = Price, ShippingPrice = 0, ImagePath = Image, BackgroundPageColor = "" };
-                return product;
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-        }
+        //}
 
         /// <summary>
         /// Gets all products

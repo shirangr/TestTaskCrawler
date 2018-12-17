@@ -22,17 +22,17 @@ namespace TestTaskCrawler.LogicLayer
                 var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
                 optionsBuilder.UseSqlServer("Data Source=TestTaskCrawler.EFContextDB");
 
-                using (var db = new EFContextDB(optionsBuilder.Options))
-                {
-                    // Create and save a new user
-                    var NewUser = new Account { Username = user.Username, Password = user.Password };
-                    db.Accounts.Append<Account>(NewUser);
-                    db.SaveChanges();
+                //using (var db = new EFContextDB(optionsBuilder.Options))
+                //{
+                //    // Create and save a new user
+                //    var NewUser = new Account { Username = user.Username, Password = user.Password };
+                //    db.Accounts.Append<Account>(NewUser);
+                //    db.SaveChanges();
 
-                    return NewUser;
-                }
+                //    return NewUser;
+                //}
 
-
+                return null;
             }
             catch (Exception ex)
             {

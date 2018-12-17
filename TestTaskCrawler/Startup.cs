@@ -5,11 +5,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using TestTaskCrawler.DAL;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestTaskCrawler
 {
@@ -33,17 +32,16 @@ namespace TestTaskCrawler
             });
 
             //db
+            //services.AddDbContext<EFContextDB>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDbContext<EFContextDB>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<EFContextDB>();
-
-            //services.AddDefaultIdentity<IdentityUser>()
-            //    .AddDefaultUI(UIFramework.Bootstrap4)
-            //    .AddEntityFrameworkStores<EFContextDB>();
 
             //services.Configure<IdentityOptions>(options =>
             //{
@@ -135,6 +133,10 @@ namespace TestTaskCrawler
                 routes.MapRoute(
                          name: "ProductsApi",
                          template: "api/{controller}/{id?}");
+
+                routes.MapRoute(
+                         name: "ProductsApi",
+                         template: "api/{controller}/{product}");
 
             });
 
