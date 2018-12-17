@@ -14,13 +14,18 @@ namespace TestTaskCrawler.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
                 services.AddDbContext<TestTaskCrawlerIdentityDbContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("TestTaskCrawlerIdentityDbContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>()
+                services.AddDefaultIdentity<IdentityUser>(config =>
+                {
+                    config.SignIn.RequireConfirmedEmail = true;
+                })
                     .AddEntityFrameworkStores<TestTaskCrawlerIdentityDbContext>();
+
             });
         }
     }
