@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
-using TestTaskCrawler.LogicLayer;
-using TestTaskCrawler.DAL;
+//using TestTaskCrawler.DAL;
 using Microsoft.AspNetCore.Authorization;
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 using HtmlAgilityPack;
 using System.Linq;
@@ -15,13 +13,14 @@ namespace TestTaskCrawler.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly EFContextDB _context;
+        //private readonly EFContextDB _context;
 
-        public HomeController(EFContextDB context)
-        {
-            _context = context;
-        }
+        //public HomeController(EFContextDB context)
+        //{
+        //    _context = context;
+        //}
 
+        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {
@@ -141,7 +140,7 @@ namespace TestTaskCrawler.Controllers
         //public IActionResult SearchProduct(string emailUser,string productUrl)
         //public IActionResult SearchProduct(Account user, string productUrl)
 
-
+        [Authorize]
         [HttpGet]
         public IActionResult SearchProduct()
         {
@@ -152,6 +151,7 @@ namespace TestTaskCrawler.Controllers
 
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult SearchProduct(string ProductUrl)
         {
@@ -239,12 +239,12 @@ namespace TestTaskCrawler.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly EFContextDB _context;
+        //private readonly EFContextDB _context;
 
-        public ProductsController(EFContextDB context)
-        {
-            _context = context;
-        }
+        //public ProductsController(EFContextDB context)
+        //{
+        //    _context = context;
+        //}
 
         //[HttpGet]
         //public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
@@ -307,10 +307,6 @@ namespace TestTaskCrawler.Controllers
                 decimal Price = Decimal.Parse(doc.DocumentNode.SelectNodes("//span[@class='price']").First().InnerHtml.Trim(charsToTrim).Trim());
                 string Image = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
                 string BackgroundPageColor = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
-
-                var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WebApplicationCrawler.ApplicationDbContext;Trusted_Connection=True;MultipleActiveResultSets=true");
-
 
                 Product product = new Product { ProductURL = ProductUrl, Name = Title, Description = Description, Condition = "not available", Price = Price, ShippingPrice = 0, ImagePath = Image, BackgroundPageColor = "" };
                 return product;

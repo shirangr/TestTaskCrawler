@@ -29,7 +29,7 @@ namespace TestTaskCrawler.Areas.Identity.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("Joe@contoso.com", "Joe Smith"),
+                From = new EmailAddress(SENDER_EMAIL, SENDER_NAME),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

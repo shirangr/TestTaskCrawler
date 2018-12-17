@@ -82,7 +82,8 @@ namespace TestTaskCrawler.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //allows newly registered users from being automatically logged on
+                    //await _signInManager.SignInAsync(user, isPersistent: false); 
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

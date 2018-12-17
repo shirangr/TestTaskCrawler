@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TestTaskCrawler.DAL;
+using TestTaskCrawler.Areas.Identity.Data;
 
 namespace TestTaskCrawler.Migrations
 {
-    [DbContext(typeof(EFContextDB))]
-    [Migration("20181217151326_CreateIdentitySchema")]
+    [DbContext(typeof(TestTaskCrawlerIdentityDbContext))]
+    [Migration("20181217224100_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

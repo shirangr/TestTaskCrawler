@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TestTaskCrawler.DAL;
+using TestTaskCrawler.Areas.Identity.Data;
 
 namespace TestTaskCrawler.Migrations
 {
-    [DbContext(typeof(EFContextDB))]
-    partial class EFContextDBModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TestTaskCrawlerIdentityDbContext))]
+    partial class TestTaskCrawlerIdentityDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity.UI;
 using TestTaskCrawler.Areas.Identity.Services;
+using TestTaskCrawler.Areas.Identity.Data;
 using System.Data.SqlClient;
 
 namespace TestTaskCrawler
@@ -58,16 +59,16 @@ namespace TestTaskCrawler
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //db
-            services.AddDbContext<EFContextDB>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            
-            //identity
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<EFContextDB>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddDefaultTokenProviders();
+            //db identity
+            //services.AddDbContext<TestTaskCrawlerIdentityDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("TestTaskCrawlerIdentityDbContextConnection")));
+
+            ////services.AddIdentity<IdentityUser, IdentityRole>()
+            //services.AddDefaultIdentity<IdentityUser>()
+            //    .AddEntityFrameworkStores<TestTaskCrawlerIdentityDbContext>()
+            //    .AddDefaultUI(UIFramework.Bootstrap4)
+            //    .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -119,6 +120,7 @@ namespace TestTaskCrawler
                 {
                     options.AllowAreas = true;
                     options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Login");
                     options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
                 });
 
@@ -131,6 +133,7 @@ namespace TestTaskCrawler
 
             // using Microsoft.AspNetCore.Identity.UI.Services;
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
