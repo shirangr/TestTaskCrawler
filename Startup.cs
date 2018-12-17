@@ -137,11 +137,12 @@ namespace TestTaskCrawler
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             //get the Api Key from json
-            var result = string.IsNullOrEmpty(_testtaskcrawlerApiKey) ? "Null" : "Not Null";
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync($"Secret is {result}");
-            });
+            //var result = string.IsNullOrEmpty(_testtaskcrawlerApiKey) ? "Null" : "Not Null";
+            
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync($"Secret is {result}");
+            //});
 
             ////get the Password for secured db from json
             //var builder = new SqlConnectionStringBuilder(
@@ -149,10 +150,10 @@ namespace TestTaskCrawler
             //builder.Password = Configuration["DbPassword"];
             //_connection = builder.ConnectionString;
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync($"DB Connection: {_connection}");
-            });
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync($"DB Connection: {_connection}");
+            //});
 
             if (env.IsDevelopment())
             {
