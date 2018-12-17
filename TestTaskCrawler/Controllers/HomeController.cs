@@ -3,10 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
 using TestTaskCrawler.LogicLayer;
 using TestTaskCrawler.DAL;
+using Microsoft.AspNetCore.Authorization;
+using System;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
+using HtmlAgilityPack;
+using System.Linq;
 
 namespace TestTaskCrawler.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly EFContextDB _context;
@@ -111,51 +117,51 @@ namespace TestTaskCrawler.Controllers
         //    return View(model);
         //}
 
-        //public ActionResult ForgotPassword(string UserName)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //if (WebSecurity.UserExists(UserName))
-        //        //{
-        //        //    string To = UserName, UserID, Password, SMTPPort, Host;
-        //        //    string token = WebSecurity.GeneratePasswordResetToken(UserName);
-        //        //    if (token == null)
-        //        //    {
-        //        //        // If user does not exist or is not confirmed.  
+        public ActionResult ForgotPassword(string UserName)
+        {
+            if (ModelState.IsValid)
+            {
+                //if (WebSecurity.UserExists(UserName))
+                //{
+                //    string To = UserName, UserID, Password, SMTPPort, Host;
+                //    string token = WebSecurity.GeneratePasswordResetToken(UserName);
+                //    if (token == null)
+                //    {
+                //        // If user does not exist or is not confirmed.  
 
-        //        //        return View("Index");
+                //        return View("Index");
 
-        //        //    }
-        //        //    else
-        //        //    {
-        //        //        //Create URL with above token  
+                //    }
+                //    else
+                //    {
+                //        //Create URL with above token  
 
-        //        //        var lnkHref = "<a href='" + Url.Action("ResetPassword", "Account", new { email = UserName, code = token }, "http") + "'>Reset Password</a>";
-
-
-        //        //        //HTML Template for Send email  
-
-        //        //        string subject = "Your changed password";
-
-        //        //        string body = "<b>Please find the Password Reset Link. </b><br/>" + lnkHref;
+                //        var lnkHref = "<a href='" + Url.Action("ResetPassword", "Account", new { email = UserName, code = token }, "http") + "'>Reset Password</a>";
 
 
-        //        //        //Get and set the AppSettings using configuration manager.  
+                //        //HTML Template for Send email  
 
-        //        //        EmailManager.AppSettings(out UserID, out Password, out SMTPPort, out Host);
+                //        string subject = "Your changed password";
+
+                //        string body = "<b>Please find the Password Reset Link. </b><br/>" + lnkHref;
 
 
-        //        //        //Call send email methods.  
+                //        //Get and set the AppSettings using configuration manager.  
 
-        //        //        EmailManager.SendEmail(UserID, subject, body, To, UserID, Password, SMTPPort, Host);
+                //        EmailManager.AppSettings(out UserID, out Password, out SMTPPort, out Host);
 
-        //        //    }
 
-        //        //}
+                //        //Call send email methods.  
 
-        //    }
-        //    return View();
-        //}
+                //        EmailManager.SendEmail(UserID, subject, body, To, UserID, Password, SMTPPort, Host);
+
+                //    }
+
+                //}
+
+            }
+            return View();
+        }
 
 
         //public IActionResult SearchProduct(string emailUser,string productUrl)
@@ -203,12 +209,12 @@ namespace TestTaskCrawler.Controllers
 
             if (ModelState.IsValid)
             {
-                var NewUser = HelperFunctions.AddUser(user);
+                //var NewUser = HelperFunctions.AddUser(user);
 
-                if (NewUser != null)
-                {
-                    return RedirectToAction("Login", "Home");
-                }
+                //if (NewUser != null)
+                //{
+                //    return RedirectToAction("Login", "Home");
+                //}
             }
 
             return View();
@@ -272,44 +278,44 @@ namespace TestTaskCrawler.Controllers
         //    return CreatedAtAction("GetProductDetailsById", "Products", new { id = product.ID }, product);
         //}
 
-        //public static Product GetProductDetailsByUrl(string ProductUrl)
-        //{
-        //    try
-        //    {
-        //        //TODO: each website has an Encoding. get encoding by attribute charset
-        //        //<html head meta charset=> encoding
-        //        //<style - body - background-color> background color of current html page
+        public static Product GetProductDetailsByUrl(string ProductUrl)
+        {
+            try
+            {
+                //TODO: each website has an Encoding. get encoding by attribute charset
+                //<html head meta charset=> encoding
+                //<style - body - background-color> background color of current html page
 
-        //        //Uri ProductUri = new Uri(ProductUrl);
+                //Uri ProductUri = new Uri(ProductUrl);
 
-        //        WebClient client = new WebClient();
-        //        HtmlDocument doc = new HtmlDocument();
-        //        String html = client.DownloadString(ProductUrl);
-        //        html = html.Replace("<br>", "\r\n"); // Replace all html breaks for line seperators.
-        //        doc.LoadHtml(html);
+                WebClient client = new WebClient();
+                HtmlDocument doc = new HtmlDocument();
+                String html = client.DownloadString(ProductUrl);
+                html = html.Replace("<br>", "\r\n"); // Replace all html breaks for line seperators.
+                doc.LoadHtml(html);
 
-        //        //Get data
-        //        string Title = doc.DocumentNode.SelectNodes("//h1[@itemprop='name']").First().InnerHtml;
-        //        string Description = doc.DocumentNode.SelectNodes("//div[@id='Description']").First().InnerHtml;
-        //        char[] charsToTrim = { '₪' };
-        //        decimal Price = Decimal.Parse(doc.DocumentNode.SelectNodes("//span[@class='price']").First().InnerHtml.Trim(charsToTrim).Trim());
-        //        string Image = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
-        //        string BackgroundPageColor = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
+                //Get data
+                string Title = doc.DocumentNode.SelectNodes("//h1[@itemprop='name']").First().InnerHtml;
+                string Description = doc.DocumentNode.SelectNodes("//div[@id='Description']").First().InnerHtml;
+                char[] charsToTrim = { '₪' };
+                decimal Price = Decimal.Parse(doc.DocumentNode.SelectNodes("//span[@class='price']").First().InnerHtml.Trim(charsToTrim).Trim());
+                string Image = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
+                string BackgroundPageColor = doc.DocumentNode.SelectNodes("//img[@class='cloudzoom']").First().InnerHtml;
 
-        //        var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
-        //        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WebApplicationCrawler.ApplicationDbContext;Trusted_Connection=True;MultipleActiveResultSets=true");
+                var optionsBuilder = new DbContextOptionsBuilder<EFContextDB>();
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WebApplicationCrawler.ApplicationDbContext;Trusted_Connection=True;MultipleActiveResultSets=true");
 
 
-        //        Product product = new Product { ProductURL = ProductUrl, Name = Title, Description = Description, Condition = "not available", Price = Price, ShippingPrice = 0, ImagePath = Image, BackgroundPageColor = "" };
-        //        return product;
+                Product product = new Product { ProductURL = ProductUrl, Name = Title, Description = Description, Condition = "not available", Price = Price, ShippingPrice = 0, ImagePath = Image, BackgroundPageColor = "" };
+                return product;
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-        //}
+        }
 
         /// <summary>
         /// Gets all products
