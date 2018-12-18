@@ -10,7 +10,7 @@ using TestTaskCrawler.Areas.Identity.Data;
 namespace TestTaskCrawler.Migrations
 {
     [DbContext(typeof(TestTaskCrawlerIdentityDbContext))]
-    [Migration("20181217224100_CreateIdentitySchema")]
+    [Migration("20181218234400_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

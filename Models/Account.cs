@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestTaskCrawler.Models
 {
@@ -11,7 +9,7 @@ namespace TestTaskCrawler.Models
         public int ID { get; set; }
 
         [Key]
-        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Please specify a user name")]
         public string Username { get; set; }
 
@@ -21,7 +19,6 @@ namespace TestTaskCrawler.Models
         public string Password { get; set; }
 
 
-        
         public ICollection<Product> Products { get; set; }
     }
 }

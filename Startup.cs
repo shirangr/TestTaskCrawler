@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,10 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Identity.UI;
 using TestTaskCrawler.Areas.Identity.Services;
-using TestTaskCrawler.Areas.Identity.Data;
-using System.Data.SqlClient;
+using TestTaskCrawler.DAL;
+using Microsoft.EntityFrameworkCore.Migrations;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Identity.UI;
 
 namespace TestTaskCrawler
 {
@@ -60,15 +61,20 @@ namespace TestTaskCrawler
             });
 
             //db identity
-            //services.AddDbContext<TestTaskCrawlerIdentityDbContext>(options =>
-            //    options.UseSqlServer(
-            //        Configuration.GetConnectionString("TestTaskCrawlerIdentityDbContextConnection")));
+            services.AddDbContext<EFContextDB>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("EFContextDBConnection")));
 
-            ////services.AddIdentity<IdentityUser, IdentityRole>()
-            //services.AddDefaultIdentity<IdentityUser>()
-            //    .AddEntityFrameworkStores<TestTaskCrawlerIdentityDbContext>()
+            //for migrations in runtime
+            //myDbContext.Database.Migrate();
+            //DbContext.GetService<IMigrator>();
+
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            ////services.AddDefaultIdentity<IdentityUser>()
+            //    .AddEntityFrameworkStores<EFContextDB>()
             //    .AddDefaultUI(UIFramework.Bootstrap4)
             //    .AddDefaultTokenProviders();
+
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -95,7 +101,7 @@ namespace TestTaskCrawler
                 //options.SignIn.RequireConfirmedEmail = true;
                 //options.SignIn.RequireConfirmedPhoneNumber = false;
             });
-            
+
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -131,9 +137,11 @@ namespace TestTaskCrawler
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
+            
             // using Microsoft.AspNetCore.Identity.UI.Services;
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -141,7 +149,7 @@ namespace TestTaskCrawler
         {
             //get the Api Key from json
             //var result = string.IsNullOrEmpty(_testtaskcrawlerApiKey) ? "Null" : "Not Null";
-            
+
             //app.Run(async (context) =>
             //{
             //    await context.Response.WriteAsync($"Secret is {result}");
