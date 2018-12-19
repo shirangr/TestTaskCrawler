@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using TestTaskCrawler.Models;
 
-namespace TestTaskCrawler.DAL
+namespace TestTaskCrawler.Data
 {
 
     public class EFContextDB : DbContext
@@ -13,7 +12,14 @@ namespace TestTaskCrawler.DAL
 
         public EFContextDB(DbContextOptions<EFContextDB> options)
         : base(options)
-        { }
+        {
+            //Database.SetInitializer<EFContextDB>(new CreateDatabaseIfNotExists<EFContextDB>());
+            //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseIfModelChanges<SchoolDBContext>());
+            //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseAlways<SchoolDBContext>());
+            //Database.SetInitializer<SchoolDBContext>(new SchoolDBInitializer());
+
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<SchoolDBContext, EF6Console.Migrations.Configuration>());
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,7 +30,7 @@ namespace TestTaskCrawler.DAL
             //{
             //    entity.Property(e => e.Username).IsRequired();
             //    entity.Property(e => e.Username).HasColumnType("EmailAddress");
-                
+
             //    entity.Property(e => e.Password).IsRequired();
             //    entity.Property(e => e.Password).HasColumnType("Password");
             //});

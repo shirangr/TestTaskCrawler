@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,19 +15,15 @@ namespace TestTaskCrawler.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Condition { get; set; }
-        //[DataType(DataType.Currency)]
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
-        //[DataType(DataType.Currency)]
         [Column(TypeName = "decimal(5, 2)")]
         public decimal ShippingPrice { get; set; }
         public string ImagePath { get; set; }
         public string BackgroundPageColor { get; set; }
 
 
-        //public string Username { get; set; }
-
-        [ForeignKey("Username")]
+        [ForeignKey("UserName")]
         public Account Account { get; set; }
     }
 }

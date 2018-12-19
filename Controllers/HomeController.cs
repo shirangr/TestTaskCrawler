@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCrawler.Models;
-//using TestTaskCrawler.DAL;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Net;
@@ -20,7 +19,6 @@ namespace TestTaskCrawler.Controllers
         //    _context = context;
         //}
 
-        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {
@@ -140,7 +138,6 @@ namespace TestTaskCrawler.Controllers
         //public IActionResult SearchProduct(string emailUser,string productUrl)
         //public IActionResult SearchProduct(Account user, string productUrl)
 
-        [Authorize]
         [HttpGet]
         public IActionResult SearchProduct()
         {
@@ -151,7 +148,6 @@ namespace TestTaskCrawler.Controllers
 
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult SearchProduct(string ProductUrl)
         {

@@ -1,5 +1,5 @@
 ﻿
-@*@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Http.Features
 
 @{
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
@@ -26,7 +26,7 @@
                 </p>
                 <div class="navbar-right">
                     <a asp-controller="Home" asp-action="Privacy" class="btn btn-info navbar-btn">Learn More</a>
-                    <button type="button" class="btn btn-default navbar-btn" data-cookie-string="@cookieString">Accept</button>
+                    <button type="button" class="btn btn-default navbar-btn" data-cookie-string="@cookieString" value="Accept">Accept</button>
                 </div>
             </div>
         </div>
@@ -39,4 +39,4 @@
             }, false);
         })();
     </script>
-}*@
+}

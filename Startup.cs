@@ -11,10 +11,11 @@ using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using TestTaskCrawler.Areas.Identity.Services;
-using TestTaskCrawler.DAL;
+using TestTaskCrawler.Data;
 using Microsoft.EntityFrameworkCore.Migrations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace TestTaskCrawler
 {
@@ -60,14 +61,29 @@ namespace TestTaskCrawler
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //services.Configure<CookieAuthenticationOptions>(options =>
+            //{
+            //    options.AccessDeniedPath = "/Account/Forbidden/";
+                //options.AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
+                //options.AutomaticAuthenticate = true,
+                //options.AutomaticChallenge = true,
+            //    options.LoginPath = "/Account/Unauthorized/";
+            //});
+
+
             //db identity
             services.AddDbContext<EFContextDB>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("EFContextDBConnection")));
 
             //for migrations in runtime
+            //var databaseCreator = dbContext.GetService<IRelationalDatabaseCreator>();
+            //databaseCreator.CreateTables();
+
             //myDbContext.Database.Migrate();
             //DbContext.GetService<IMigrator>();
+
+
 
             //services.AddIdentity<IdentityUser, IdentityRole>()
             ////services.AddDefaultIdentity<IdentityUser>()
@@ -86,20 +102,20 @@ namespace TestTaskCrawler
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
 
-                //// Lockout settings.
-                //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                //options.Lockout.MaxFailedAccessAttempts = 5;
-                //options.Lockout.AllowedForNewUsers = true;
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
 
 
-                //// Default User settings.
-                //options.User.AllowedUserNameCharacters =
-                //        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                //options.User.RequireUniqueEmail = true;
+                // Default User settings.
+                options.User.AllowedUserNameCharacters =
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
 
-                //// Default SignIn settings.
-                //options.SignIn.RequireConfirmedEmail = true;
-                //options.SignIn.RequireConfirmedPhoneNumber = false;
+                // Default SignIn settings.
+                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
             });
 
 
@@ -137,7 +153,7 @@ namespace TestTaskCrawler
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
-            
+
             // using Microsoft.AspNetCore.Identity.UI.Services;
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
@@ -147,6 +163,8 @@ namespace TestTaskCrawler
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+
             //get the Api Key from json
             //var result = string.IsNullOrEmpty(_testtaskcrawlerApiKey) ? "Null" : "Not Null";
 
@@ -221,12 +239,24 @@ namespace TestTaskCrawler
                     template: "{controller=Home}/{action=Privacy}/{id?}");
 
                 routes.MapRoute(
-                         name: "ProductsApi",
-                         template: "api/{controller}/{id?}");
+                    name: "Products_Index",
+                    template: "{controller=Products}/{action=Index}/{id?}");
 
                 routes.MapRoute(
-                         name: "ProductsApi2",
-                         template: "api/{controller}/{product}");
+                    name: "Products_Create",
+                    template: "{controller=Products}/{action=Create}/{id?}");
+
+                //routes.MapRoute(
+                //    name: "Products_Details",
+                //    template: "{controller=Products}/{action=Details}/{id?}");
+
+                //routes.MapRoute(
+                //         name: "ProductsApi",
+                //         template: "api/{controller}/{id?}");
+
+                //routes.MapRoute(
+                //         name: "ProductsApi2",
+                //         template: "api/{controller}/{product}");
 
             });
 

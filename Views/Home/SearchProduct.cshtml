@@ -12,8 +12,8 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <form class="form-inline my-2 my-lg-0" asp-action="SearchProduct">
-            @*@Html.TextBoxFor(model => model.ProductURL, new { @class = "form-control center", @placeholder = "Product URL" })
-            @Html.ValidationMessageFor(model => model.ProductURL)*@
+            @Html.TextBoxFor(model => model.ProductURL, new { @class = "form-control center", @placeholder = "Product URL" })
+            @Html.ValidationMessageFor(model => model.ProductURL)
             <input class="form-control mr-sm-2" name="ProductURL" id="searchline" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             <br />
@@ -34,33 +34,33 @@
                 </thead>
                 <tbody>
                     @*@if (Model == null)
-                {
-
-                }
-                else
-                {
-                    if (Model.Products == null)
-                    {
-
-                    }
-                    else
-                    {
-                        foreach (var item in Model.Products)
                         {
-                            <tr>
-                                <td>@item.ProductURL</td>
-                                <td>@item.Name</td>
-                                <td>@item.Description</td>
-                                <td>@item.Condition</td>
-                                <td>@item.Price</td>
-                                <td>@item.ShippingPrice</td>
-                                <td>@item.ImagePath</td>
-                                <td>@item.BackgroundPageColor</td>
-                            </tr>
-                        }
-                    }
 
-                }*@
+                        }
+                        else
+                        {
+                            if (Model == null)
+                            {
+
+                            }
+                            else
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.ProductURL</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.Description</td>
+                                        <td>@item.Condition</td>
+                                        <td>@item.Price</td>
+                                        <td>@item.ShippingPrice</td>
+                                        <td>@item.ImagePath</td>
+                                        <td>@item.BackgroundPageColor</td>
+                                    </tr>
+                                }
+                            }
+
+                        }*@
                 </tbody>
             </table>
         </form>
@@ -68,3 +68,11 @@
 
     </div>
 </nav>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
